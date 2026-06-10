@@ -1,261 +1,1052 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>MyRecord — Home</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>MyRecord</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="_shared.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-.home-hero{padding:2.5rem 0 1.5rem;text-align:center}
-.home-hero h1{font-size:clamp(28px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:.5rem}
-.home-hero p{font-size:15px;color:var(--text2);max-width:440px;margin:0 auto}
-.home-hero .greeting{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.75rem}
-.section-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:2rem}
-.section-card{
-  background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh);
-  padding:1.25rem;text-decoration:none;color:var(--text);
-  display:flex;flex-direction:column;gap:10px;
-  transition:transform .15s,box-shadow .15s;border:1px solid var(--border);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0A0A1A;
+  --surface:#12122A;
+  --card:#1A1A35;
+  --card2:#20203E;
+  --border:rgba(255,255,255,0.08);
+  --text:#FFFFFF;
+  --text2:rgba(255,255,255,0.65);
+  --text3:rgba(255,255,255,0.35);
+  --accent:#6C5CE7;
+  --accent2:#A29BFE;
+  --teal:#00CEC9;
+  --pink:#FD79A8;
+  --amber:#FDCB6E;
+  --green:#00B894;
+  --red:#FF7675;
+  --orange:#E17055;
+  --blue:#74B9FF;
+  --purple:#A29BFE;
+  --nav-h:70px;
+}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  font-size:14px;line-height:1.5;
+  display:flex;flex-direction:column;
+  max-width:430px;margin:0 auto;
+  position:relative;
+}
+
+/* ── Screens ── */
+.screen{
+  display:none;flex-direction:column;
+  height:calc(100vh - var(--nav-h));
+  overflow-y:auto;overflow-x:hidden;
+  padding-bottom:1rem;
+  -webkit-overflow-scrolling:touch;
+}
+.screen.active{display:flex}
+/* hide scrollbar */
+.screen::-webkit-scrollbar{display:none}
+.screen{-ms-overflow-style:none;scrollbar-width:none}
+
+/* ── Top status bar ── */
+.statusbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px 0;flex-shrink:0;
+}
+.statusbar-time{font-size:13px;font-weight:600;color:var(--text2)}
+.statusbar-icons{display:flex;gap:6px;align-items:center}
+.statusbar-icons svg{width:16px;height:16px;fill:var(--text2)}
+
+/* ── Hero card ── */
+.hero{
+  margin:12px 16px;
+  background:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 50%,#fd79a8 100%);
+  border-radius:20px;padding:20px;position:relative;overflow:hidden;
+  flex-shrink:0;
+}
+.hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:140px;height:140px;background:rgba(255,255,255,0.08);
+  border-radius:50%;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-30px;right:30px;
+  width:90px;height:90px;background:rgba(255,255,255,0.06);
+  border-radius:50%;
+}
+.hero-greeting{font-size:12px;font-weight:500;opacity:.8;margin-bottom:2px}
+.hero-name{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+.hero-stat{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px;backdrop-filter:blur(10px)}
+.hero-stat-label{font-size:10px;font-weight:600;opacity:.75;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.hero-stat-val{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.hero-stat-val.green{color:#00ffcc}
+.hero-stat-val.red{color:#ffb3b3}
+
+/* ── Section label ── */
+.section-label{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--text3);
+  padding:0 20px;margin:16px 0 10px;flex-shrink:0;
+}
+
+/* ── 4×4 icon grid ── */
+.icon-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:10px;padding:0 16px;flex-shrink:0;
+}
+.grid-btn{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:14px 8px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:transform .15s,background .15s;
+  text-decoration:none;color:var(--text);
+  -webkit-tap-highlight-color:transparent;
   position:relative;overflow:hidden;
 }
-.section-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--card-color,var(--accent));
+.grid-btn:active{transform:scale(.94);background:var(--card2)}
+.grid-btn .btn-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
 }
-.section-card:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
-.section-card-icon{font-size:26px;line-height:1}
-.section-card-title{font-size:14px;font-weight:600;line-height:1.3}
-.section-card-desc{font-size:12px;color:var(--text3);line-height:1.5}
-.section-card-count{
-  margin-top:auto;font-size:11px;font-weight:600;
-  font-family:'JetBrains Mono',monospace;color:var(--text3);
+.grid-btn .btn-label{font-size:11px;font-weight:600;text-align:center;line-height:1.2;color:var(--text2)}
+.grid-btn .btn-badge{
+  position:absolute;top:8px;right:8px;
+  background:var(--red);color:#fff;
+  font-size:9px;font-weight:700;
+  width:16px;height:16px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
 }
-.quick-section{margin-bottom:1.5rem}
-.quick-section h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:10px}
-.widget-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.widget{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);padding:1rem}
-.widget-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.widget-title a{color:var(--accent);font-size:11px;margin-left:auto;text-decoration:none;font-weight:500}
-.widget-title a:hover{text-decoration:underline}
-.widget-row-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
-.widget-row-item:last-child{border-bottom:none}
-.widget-row-item .wlabel{color:var(--text2)}
-.widget-row-item .wval{font-weight:600;font-family:'JetBrains Mono',monospace}
+
+/* Icon background colors */
+.ic-task{background:rgba(108,92,231,.25)}
+.ic-leave{background:rgba(0,184,148,.25)}
+.ic-finance{background:rgba(253,203,110,.25)}
+.ic-health{background:rgba(255,118,117,.25)}
+.ic-family{background:rgba(253,121,168,.25)}
+.ic-study{background:rgba(116,185,255,.25)}
+.ic-trip{background:rgba(225,112,85,.25)}
+.ic-plans{background:rgba(162,155,254,.25)}
+.ic-digi{background:rgba(0,206,201,.25)}
+.ic-cal{background:rgba(253,203,110,.25)}
+.ic-contact{background:rgba(162,155,254,.25)}
+.ic-more{background:rgba(255,255,255,.1)}
+
+/* ── Quick stats row ── */
+.quick-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;padding:0 16px;flex-shrink:0;
+}
+.quick-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:14px;position:relative;overflow:hidden;
+}
+.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.quick-card.leave::before{background:linear-gradient(90deg,var(--green),var(--teal))}
+.quick-card.task::before{background:linear-gradient(90deg,var(--accent),var(--purple))}
+.quick-card-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px}
+.quick-card-val{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+.quick-card-val.green{color:var(--green)}
+.quick-card-val.red{color:var(--red)}
+.quick-card-val.blue{color:var(--blue)}
+.quick-card-sub{font-size:11px;color:var(--text3)}
+.prog-mini{height:3px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:8px}
+.prog-mini-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width .5s}
+
+/* ── Bottom nav ── */
+.bottom-nav{
+  height:var(--nav-h);background:var(--surface);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);
+}
+.nav-tab{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;padding:8px 16px;border-radius:12px;
+  transition:background .15s;color:var(--text3);
+  background:none;border:none;font-family:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-tab.active{color:var(--accent2)}
+.nav-tab:active{background:rgba(255,255,255,.05)}
+.nav-tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-tab span{font-size:10px;font-weight:600}
+.nav-tab.active svg{stroke:var(--accent2)}
+
+/* ── Detail screens (Leave, etc) ── */
+.screen-header{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px 12px;flex-shrink:0;
+}
+.back-btn{
+  width:36px;height:36px;background:var(--card);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border:1px solid var(--border);flex-shrink:0;
+}
+.back-btn svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.screen-title{font-size:18px;font-weight:700;letter-spacing:-.01em}
+
+/* Stats row */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;padding:0 16px;margin-bottom:12px;flex-shrink:0;
+}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 10px;text-align:center}
+.stat-pill-val{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.stat-pill-val.g{color:var(--green)}.stat-pill-val.r{color:var(--red)}.stat-pill-val.b{color:var(--blue)}
+.stat-pill-label{font-size:10px;color:var(--text3);margin-top:2px;font-weight:500}
+
+/* Form card */
+.form-card{
+  margin:0 16px 12px;background:var(--card);
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;flex-shrink:0;
+}
+.form-card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+}
+.form-card-header h3{font-size:13px;font-weight:700}
+.form-card-toggle{
+  font-size:11px;font-weight:600;color:var(--accent2);
+  background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;
+}
+.form-card-body{padding:14px 16px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.f-field{margin-bottom:10px}
+.f-field:last-child{margin-bottom:0}
+.f-field label{display:block;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.f-field input,.f-field select,.f-field textarea{
+  width:100%;padding:10px 12px;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;color:var(--text);font-size:13px;font-family:inherit;
+  appearance:none;transition:border-color .15s;
+}
+.f-field input:focus,.f-field select:focus{outline:none;border-color:var(--accent2)}
+.f-field select option{background:var(--card2)}
+.add-btn{
+  width:100%;padding:13px;margin-top:4px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;font-size:14px;font-weight:700;
+  border:none;border-radius:12px;cursor:pointer;
+  font-family:inherit;transition:opacity .15s;
+}
+.add-btn:active{opacity:.85}
+.add-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* Entry list */
+.entry-list{padding:0 16px;flex:1}
+.entry-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:14px;margin-bottom:8px;
+  cursor:pointer;transition:background .12s;
+  display:flex;align-items:center;gap:12px;
+}
+.entry-card:active{background:var(--card2)}
+.entry-icon{
+  width:40px;height:40px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;background:rgba(108,92,231,.2);
+}
+.entry-info{flex:1;min-width:0}
+.entry-title{font-size:13px;font-weight:600;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry-sub{font-size:11px;color:var(--text3)}
+.entry-right{text-align:right;flex-shrink:0}
+.entry-val{font-size:14px;font-weight:700}
+.entry-val.g{color:var(--green)}.entry-val.r{color:var(--red)}
+.entry-date{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* Edit sheet (bottom drawer) */
+.sheet-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end}
+.sheet-bg.open{display:flex}
+.sheet{
+  background:var(--surface);border-radius:24px 24px 0 0;
+  padding:0 0 env(safe-area-inset-bottom);
+  width:100%;max-height:85vh;overflow-y:auto;
+}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:99px;margin:12px auto 0}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px}
+.sheet-hdr h3{font-size:16px;font-weight:700}
+.sheet-close{background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;padding:4px}
+.sheet-body{padding:0 20px}
+.sheet-foot{display:flex;gap:10px;padding:16px 20px}
+.sheet-foot .btn{flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:none}
+.btn-del{background:rgba(255,118,117,.15);color:var(--red)}
+.btn-save{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+
+/* Toast */
+.toast-wrap{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none}
+.toast{
+  background:rgba(30,30,60,.95);color:#fff;
+  font-size:13px;font-weight:500;
+  padding:10px 18px;border-radius:99px;
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(20px);
+  opacity:0;transform:translateY(-8px);
+  transition:all .22s;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{border-color:var(--green);color:var(--green)}
+.toast.err{border-color:var(--red);color:var(--red)}
+
+/* Progress bar */
+.prog-bar{height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin:0 16px 16px;flex-shrink:0}
+.prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:99px;transition:width .5s}
+
+/* Cal checkbox row */
+.cal-check{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(116,185,255,.1);border-radius:10px;margin-bottom:10px}
+.cal-check label{font-size:12px;color:var(--blue);cursor:pointer;font-weight:500}
+.cal-check input{accent-color:var(--blue);width:14px;height:14px}
+
+/* Splash / loading */
+.splash{
+  position:fixed;inset:0;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:999;transition:opacity .4s;
+}
+.splash.hide{opacity:0;pointer-events:none}
+.splash-logo{
+  width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-size:32px;margin-bottom:16px;
+  animation:pulse2 1.5s ease-in-out infinite;
+}
+@keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.splash-name{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.splash-sub{font-size:13px;color:var(--text3)}
+.loader{width:40px;height:3px;background:var(--card);border-radius:99px;margin-top:32px;overflow:hidden}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;animation:load 1.5s ease-in-out infinite}
+@keyframes load{0%{width:0%;margin-left:0}50%{width:60%}100%{width:0%;margin-left:100%}}
+
+/* Utility */
+.hidden{display:none!important}
+.divider{height:1px;background:var(--border);margin:4px 0}
 </style>
 </head>
 <body>
 
-<!-- Top bar -->
-<div class="topbar">
-  <div class="topbar-left">
-    <button class="hamburger" onclick="toggleSidebar()">
-      <svg viewBox="0 0 20 20"><path d="M2 5h16M2 10h16M2 15h16"/></svg>
-    </button>
-    <a class="brand" href="index.html">
-      <div class="brand-mark">
-        <svg viewBox="0 0 17 17"><rect x="2" y="2" width="6" height="6" rx="1.5"/><rect x="9" y="2" width="6" height="6" rx="1.5"/><rect x="2" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
-      </div>
-      MyRecord
-    </a>
+<!-- Splash -->
+<div class="splash" id="splash">
+  <div class="splash-logo">📋</div>
+  <div class="splash-name">MyRecord</div>
+  <div class="splash-sub">Your personal hub</div>
+  <div class="loader"><div class="loader-fill"></div></div>
+</div>
+
+<!-- Toast -->
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<!-- ════════════════════════════════
+     SCREEN: HOME
+════════════════════════════════ -->
+<div class="screen active" id="screen-home">
+  <!-- Status bar -->
+  <div class="statusbar">
+    <span class="statusbar-time" id="clockTime">--:--</span>
+    <div class="statusbar-icons">
+      <svg viewBox="0 0 24 24"><path d="M1 6l5.5 5.5L12 6l5.5 5.5L23 6"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+    </div>
   </div>
-  <div class="topbar-right">
-    <button class="sync-pill" onclick="loadHome()">
-      <div class="sdot" id="sdot"></div>
-      <span id="slabel">Ready</span>
-    </button>
+
+  <!-- Hero card -->
+  <div class="hero">
+    <div class="hero-greeting" id="heroGreeting">Good morning</div>
+    <div class="hero-name">Pholline 👋</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-label">Leave Left</div>
+        <div class="hero-stat-val green" id="heroLeave">—</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Leave Used</div>
+        <div class="hero-stat-val red" id="heroUsed">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section label -->
+  <div class="section-label">My Sections</div>
+
+  <!-- 4×4 grid -->
+  <div class="icon-grid">
+    <div class="grid-btn" onclick="openScreen('leave')">
+      <div class="btn-icon ic-leave">🌴</div>
+      <span class="btn-label">Annual Leave</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('task')">
+      <div class="btn-icon ic-task">✅</div>
+      <span class="btn-label">Task</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('finance')">
+      <div class="btn-icon ic-finance">💰</div>
+      <span class="btn-label">Finance</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('health')">
+      <div class="btn-icon ic-health">❤️</div>
+      <span class="btn-label">Health</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('family')">
+      <div class="btn-icon ic-family">👨‍👩‍👧</div>
+      <span class="btn-label">Family</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('study')">
+      <div class="btn-icon ic-study">📚</div>
+      <span class="btn-label">Study</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('trip')">
+      <div class="btn-icon ic-trip">✈️</div>
+      <span class="btn-label">Trip Plans</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('plans')">
+      <div class="btn-icon ic-plans">🎯</div>
+      <span class="btn-label">Plans</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('digi')">
+      <div class="btn-icon ic-digi">🔐</div>
+      <span class="btn-label">Digi Asset</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('calendar')">
+      <div class="btn-icon ic-cal">📅</div>
+      <span class="btn-label">Calendar</span>
+    </div>
+    <div class="grid-btn" onclick="openScreen('contact')">
+      <div class="btn-icon ic-contact">👤</div>
+      <span class="btn-label">Contact</span>
+    </div>
+    <div class="grid-btn" onclick="goSettings()">
+      <div class="btn-icon ic-more">⚙️</div>
+      <span class="btn-label">Settings</span>
+    </div>
   </div>
 </div>
 
-<!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-inner">
-    <div class="nav-section">
-      <span class="nav-label">Overview</span>
-      <nav>
-        <a href="index.html" data-page="index.html"><span class="nav-icon">🏠</span>Home</a>
-        <a href="task.html" data-page="task.html"><span class="nav-icon">✅</span>Task</a>
-      </nav>
+<!-- ════════════════════════════════
+     SCREEN: LEAVE
+════════════════════════════════ -->
+<div class="screen" id="screen-leave">
+  <div class="screen-header">
+    <div class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </div>
-    <div class="nav-section">
-      <span class="nav-label">Personal</span>
-      <nav>
-        <a href="leave.html" data-page="leave.html"><span class="nav-icon">🌴</span>Annual Leave</a>
-        <a href="finance.html" data-page="finance.html"><span class="nav-icon">💰</span>Finance</a>
-        <a href="health.html" data-page="health.html"><span class="nav-icon">❤️</span>Health</a>
-        <a href="family.html" data-page="family.html"><span class="nav-icon">👨‍👩‍👧</span>Family</a>
-      </nav>
+    <div class="screen-title">🌴 Annual Leave</div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="stats-strip">
+    <div class="stat-pill">
+      <div class="stat-pill-val b">20</div>
+      <div class="stat-pill-label">Balance</div>
     </div>
-    <div class="nav-section">
-      <span class="nav-label">Growth</span>
-      <nav>
-        <a href="study.html" data-page="study.html"><span class="nav-icon">📚</span>Study</a>
-        <a href="trip.html" data-page="trip.html"><span class="nav-icon">✈️</span>Trip Plans</a>
-        <a href="plans.html" data-page="plans.html"><span class="nav-icon">🎯</span>Plans</a>
-      </nav>
+    <div class="stat-pill">
+      <div class="stat-pill-val r" id="lSpent">–</div>
+      <div class="stat-pill-label">Spent</div>
     </div>
-    <div class="nav-section">
-      <span class="nav-label">Digital</span>
-      <nav>
-        <a href="digi.html" data-page="digi.html"><span class="nav-icon">🔐</span>Digi Asset</a>
-        <a href="calendar.html" data-page="calendar.html"><span class="nav-icon">📅</span>Calendar</a>
-        <a href="contact.html" data-page="contact.html"><span class="nav-icon">👤</span>Contact</a>
-      </nav>
+    <div class="stat-pill">
+      <div class="stat-pill-val g" id="lRem">–</div>
+      <div class="stat-pill-label">Remaining</div>
     </div>
   </div>
-  <div class="sidebar-footer">
-    <div class="url-config">
-      <label>Apps Script URL</label>
-      <input type="url" id="urlInput" placeholder="https://script.google.com/macros/s/AKfycbz9TURWIT_vdjoPqCDdmC503sblckjXSoM-Bu2nPRS1URTCBGHLYV81Rga0Fmkxn5qH3A/exec"/>
-      <button class="btn btn-ghost" onclick="saveUrl()">Save & connect</button>
+
+  <!-- Progress -->
+  <div class="prog-bar"><div class="prog-bar-fill" id="lProgBar" style="width:0%"></div></div>
+
+  <!-- Add form -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <h3>Add leave entry</h3>
+      <button class="form-card-toggle" onclick="toggleForm('leaveForm')">Hide ↑</button>
+    </div>
+    <div class="form-card-body" id="leaveForm">
+      <div class="f-row">
+        <div class="f-field"><label>Leave date</label><input type="date" id="lDate"/></div>
+        <div class="f-field"><label>Days</label><input type="number" id="lDays" min="0.5" step="0.5" placeholder="1"/></div>
+      </div>
+      <div class="f-field"><label>Reason</label>
+        <select id="lReason">
+          <option value="">Select…</option>
+          <option>Busy at home</option><option>Going to province</option>
+          <option>Going to homeland</option><option>Children Graduation</option>
+          <option>Medical</option><option>Other</option>
+        </select>
+      </div>
+      <div class="f-field"><label>Remark</label><input type="text" id="lRemark" placeholder="e.g. HCMC Marathon"/></div>
+      <div class="f-field"><label>Application date</label><input type="date" id="lAppDate"/></div>
+      <div class="cal-check">
+        <input type="checkbox" id="lCal" checked/>
+        <label for="lCal">📅 Add to Google Calendar</label>
+      </div>
+      <button class="add-btn" id="lAddBtn" onclick="addLeave()">+ Add Entry</button>
     </div>
   </div>
-</aside>
 
-<div class="page" id="page">
-  <div class="page-inner">
-    <div class="home-hero">
-      <div class="greeting" id="greeting">Good morning</div>
-      <h1>Your personal<br>record hub</h1>
-      <p>All your sheets in one place — tap any section to view, add, or edit entries directly.</p>
+  <!-- History -->
+  <div class="section-label" style="margin-top:4px">History <span id="lCount" style="color:var(--accent2);font-size:10px"></span></div>
+  <div class="entry-list" id="leaveList">
+    <div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN: GENERIC (Task/Finance/Health/etc)
+════════════════════════════════ -->
+<div class="screen" id="screen-generic">
+  <div class="screen-header">
+    <div class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </div>
-
-    <div class="quick-section">
-      <h2>All sections</h2>
-      <div class="section-grid">
-        <a class="section-card" href="task.html" style="--card-color:var(--c-task)">
-          <div class="section-card-icon">✅</div>
-          <div class="section-card-title">Task</div>
-          <div class="section-card-desc">To-dos, priorities, status tracking</div>
-        </a>
-        <a class="section-card" href="leave.html" style="--card-color:var(--c-leave)">
-          <div class="section-card-icon">🌴</div>
-          <div class="section-card-title">Annual Leave</div>
-          <div class="section-card-desc">Leave balance, history, calendar sync</div>
-          <div class="section-card-count" id="leaveWidget">— days remaining</div>
-        </a>
-        <a class="section-card" href="finance.html" style="--card-color:var(--c-finance)">
-          <div class="section-card-icon">💰</div>
-          <div class="section-card-title">Finance</div>
-          <div class="section-card-desc">Income, expenses, savings goals</div>
-        </a>
-        <a class="section-card" href="health.html" style="--card-color:var(--c-health)">
-          <div class="section-card-icon">❤️</div>
-          <div class="section-card-title">Health</div>
-          <div class="section-card-desc">Weight, vitals, medical records</div>
-        </a>
-        <a class="section-card" href="family.html" style="--card-color:var(--c-family)">
-          <div class="section-card-icon">👨‍👩‍👧</div>
-          <div class="section-card-title">Family</div>
-          <div class="section-card-desc">Family events, records, reminders</div>
-        </a>
-        <a class="section-card" href="study.html" style="--card-color:var(--c-study)">
-          <div class="section-card-icon">📚</div>
-          <div class="section-card-title">Study</div>
-          <div class="section-card-desc">Courses, progress, notes</div>
-        </a>
-        <a class="section-card" href="trip.html" style="--card-color:var(--c-trip)">
-          <div class="section-card-icon">✈️</div>
-          <div class="section-card-title">Trip Plans</div>
-          <div class="section-card-desc">Destinations, itineraries, budgets</div>
-        </a>
-        <a class="section-card" href="plans.html" style="--card-color:var(--c-plans)">
-          <div class="section-card-icon">🎯</div>
-          <div class="section-card-title">Plans</div>
-          <div class="section-card-desc">Goals, milestones, timelines</div>
-        </a>
-        <a class="section-card" href="digi.html" style="--card-color:var(--c-digi)">
-          <div class="section-card-icon">🔐</div>
-          <div class="section-card-title">Digi Asset</div>
-          <div class="section-card-desc">Accounts, subscriptions, crypto</div>
-        </a>
-        <a class="section-card" href="calendar.html" style="--card-color:var(--c-cal)">
-          <div class="section-card-icon">📅</div>
-          <div class="section-card-title">Calendar</div>
-          <div class="section-card-desc">Events, reminders, schedule</div>
-        </a>
-        <a class="section-card" href="contact.html" style="--card-color:var(--c-contact)">
-          <div class="section-card-icon">👤</div>
-          <div class="section-card-title">Contact</div>
-          <div class="section-card-desc">People, notes, relationships</div>
-        </a>
-      </div>
+    <div class="screen-title" id="genericTitle">–</div>
+  </div>
+  <div class="form-card">
+    <div class="form-card-header">
+      <h3>Add entry</h3>
+      <button class="form-card-toggle" onclick="toggleForm('genericFormBody')">Hide ↑</button>
     </div>
+    <div class="form-card-body" id="genericFormBody">
+      <div id="genericFields"></div>
+      <button class="add-btn" id="gAddBtn" onclick="addGeneric()">+ Add Entry</button>
+    </div>
+  </div>
+  <div class="section-label" style="margin-top:4px">Records <span id="gCount" style="color:var(--accent2);font-size:10px"></span></div>
+  <div class="entry-list" id="genericList">
+    <div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>
+  </div>
+</div>
 
-    <div class="widget-row">
-      <div class="widget">
-        <div class="widget-title">🌴 Leave snapshot <a href="leave.html">View all →</a></div>
-        <div id="leaveSnap"><div class="empty"><p>Connect to load data</p></div></div>
-      </div>
-      <div class="widget">
-        <div class="widget-title">📅 Today <a href="calendar.html">Calendar →</a></div>
-        <div id="todayWidget">
-          <div class="widget-row-item"><span class="wlabel">Date</span><span class="wval" id="wDate">–</span></div>
-          <div class="widget-row-item"><span class="wlabel">Day</span><span class="wval" id="wDay">–</span></div>
-          <div class="widget-row-item"><span class="wlabel">Week</span><span class="wval" id="wWeek">–</span></div>
+<!-- ════════════════════════════════
+     SCREEN: SETTINGS
+════════════════════════════════ -->
+<div class="screen" id="screen-settings">
+  <div class="screen-header">
+    <div class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <div class="screen-title">⚙️ Settings</div>
+  </div>
+  <div style="padding:0 16px">
+    <div class="form-card" style="margin:0 0 12px">
+      <div class="form-card-header"><h3>Google Sheets Connection</h3></div>
+      <div class="form-card-body">
+        <div class="f-field"><label>Apps Script URL</label>
+          <input type="url" id="settingsUrl" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:11px"/>
         </div>
+        <button class="add-btn" onclick="saveSettings()">Save & Connect</button>
+      </div>
+    </div>
+    <div class="form-card" style="margin:0">
+      <div class="form-card-header"><h3>Connection Status</h3></div>
+      <div class="form-card-body">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0" id="connDot"></div>
+          <span style="font-size:13px;color:var(--text2)" id="connLabel">Not tested</span>
+        </div>
+        <button class="add-btn" style="background:var(--card2);color:var(--text2)" onclick="testConn()">Test Connection</button>
       </div>
     </div>
   </div>
 </div>
-<div id="_toast" class="toast"></div>
 
-<script src="_shared.js"></script>
+<!-- Bottom nav -->
+<div class="bottom-nav">
+  <button class="nav-tab active" id="tab-home" onclick="showTab('home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-tab" id="tab-leave" onclick="openScreen('leave')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Leave</span>
+  </button>
+  <button class="nav-tab" id="tab-task" onclick="openScreen('task')">
+    <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Tasks</span>
+  </button>
+  <button class="nav-tab" id="tab-settings" onclick="goSettings()">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span>Settings</span>
+  </button>
+</div>
+
+<!-- Edit bottom sheet -->
+<div class="sheet-bg" id="editSheet" onclick="closeSheet(event)">
+  <div class="sheet" id="sheetInner">
+    <div class="sheet-handle"></div>
+    <div class="sheet-hdr">
+      <h3 id="sheetTitle">Edit entry</h3>
+      <button class="sheet-close" onclick="closeSheetDirect()">×</button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+    <div class="sheet-foot">
+      <button class="btn btn-del" onclick="deleteEntry()">🗑 Delete</button>
+      <button class="btn btn-save" onclick="saveEntry()">Save changes</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// Greeting
-const h = new Date().getHours();
-document.getElementById("greeting").textContent = h<12?"Good morning ☀️":h<17?"Good afternoon 🌤":"Good evening 🌙";
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const GS_URL = "https://script.google.com/macros/s/AKfycbz9TURWIT_vdjoPqCDdmC503sblckjXSoM-Bu2nPRS1URTCBGHLYV81Rga0Fmkxn5qH3A/exec";
+const BALANCE = 20;
 
-// Today widget
-const now = new Date();
-const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-document.getElementById("wDate").textContent = now.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
-document.getElementById("wDay").textContent = days[now.getDay()];
-const jan1 = new Date(now.getFullYear(),0,1);
-document.getElementById("wWeek").textContent = "W" + Math.ceil(((now-jan1)/86400000+jan1.getDay()+1)/7);
+// Page configs
+const PAGE_CONFIG = {
+  task:     { icon:"✅", sheet:"Task",      label:"Task",      cols:["Title","Priority","Status","Due Date","Notes"],
+              fields:[{t:"text",n:"Title"},{t:"select",n:"Priority",o:["High","Medium","Low"]},{t:"select",n:"Status",o:["Open","In Progress","Done","Cancelled"]},{t:"date",n:"Due Date"},{t:"text",n:"Notes"}]},
+  finance:  { icon:"💰", sheet:"Finance",   label:"Finance",   cols:["Date","Category","Description","Amount","Type","Notes"],
+              fields:[{t:"date",n:"Date"},{t:"select",n:"Category",o:["Income","Food","Transport","Utilities","Health","Entertainment","Other"]},{t:"text",n:"Description"},{t:"number",n:"Amount"},{t:"select",n:"Type",o:["Income","Expense"]},{t:"text",n:"Notes"}]},
+  health:   { icon:"❤️", sheet:"Health",    label:"Health",    cols:["Date","Type","Value","Unit","Notes"],
+              fields:[{t:"date",n:"Date"},{t:"select",n:"Type",o:["Weight","Blood Pressure","Heart Rate","Steps","Sleep","Medication","Doctor Visit","Other"]},{t:"text",n:"Value"},{t:"text",n:"Unit"},{t:"text",n:"Notes"}]},
+  family:   { icon:"👨‍👩‍👧", sheet:"Family",   label:"Family",   cols:["Date","Member","Event","Description","Notes"],
+              fields:[{t:"date",n:"Date"},{t:"text",n:"Member"},{t:"select",n:"Event",o:["Birthday","Anniversary","Medical","School","Travel","Gathering","Other"]},{t:"text",n:"Description"},{t:"text",n:"Notes"}]},
+  study:    { icon:"📚", sheet:"Study",     label:"Study",     cols:["Date","Course","Topic","Progress","Source","Notes"],
+              fields:[{t:"date",n:"Date"},{t:"text",n:"Course"},{t:"text",n:"Topic"},{t:"select",n:"Progress",o:["Not Started","In Progress","Completed"]},{t:"text",n:"Source"},{t:"text",n:"Notes"}]},
+  trip:     { icon:"✈️", sheet:"Trip Plans",label:"Trip Plans",cols:["Destination","Start Date","End Date","Status","Budget","Notes"],
+              fields:[{t:"text",n:"Destination"},{t:"date",n:"Start Date"},{t:"date",n:"End Date"},{t:"select",n:"Status",o:["Planning","Confirmed","Completed","Cancelled"]},{t:"number",n:"Budget"},{t:"text",n:"Notes"}]},
+  plans:    { icon:"🎯", sheet:"Plans",     label:"Plans",     cols:["Title","Category","Target Date","Status","Priority","Notes"],
+              fields:[{t:"text",n:"Title"},{t:"select",n:"Category",o:["Career","Health","Finance","Family","Personal","Education","Other"]},{t:"date",n:"Target Date"},{t:"select",n:"Status",o:["Active","On Hold","Completed","Cancelled"]},{t:"select",n:"Priority",o:["High","Medium","Low"]},{t:"text",n:"Notes"}]},
+  digi:     { icon:"🔐", sheet:"Digi Asset",label:"Digi Asset",cols:["Name","Category","Account","Value","Notes"],
+              fields:[{t:"text",n:"Name"},{t:"select",n:"Category",o:["Crypto","Investment","Domain","Subscription","Account","Software","Other"]},{t:"text",n:"Account"},{t:"text",n:"Value"},{t:"text",n:"Notes"}]},
+  calendar: { icon:"📅", sheet:"Calendar",  label:"Calendar",  cols:["Date","Title","Type","Description","Notes"],
+              fields:[{t:"date",n:"Date"},{t:"text",n:"Title"},{t:"select",n:"Type",o:["Event","Reminder","Holiday","Birthday","Meeting","Other"]},{t:"text",n:"Description"},{t:"text",n:"Notes"}]},
+  contact:  { icon:"👤", sheet:"Contact",   label:"Contact",   cols:["Name","Relationship","Phone","Email","Notes"],
+              fields:[{t:"text",n:"Name"},{t:"select",n:"Relationship",o:["Family","Friend","Colleague","Business","Other"]},{t:"text",n:"Phone"},{t:"text",n:"Email"},{t:"text",n:"Notes"}]},
+};
 
-function saveUrl(){
-  const v = document.getElementById("urlInput").value.trim();
-  if(!v){toast("Paste your Apps Script URL","err");return;}
-  localStorage.setItem("gs_url",v);
-  toast("Saved — loading data…","ok");
-  loadHome();
+// State
+let currentScreen = "home";
+let currentConfig = null;
+let genericRows = [];
+let leaveEntries = [];
+let editData = null;
+let editSheet = null;
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.addEventListener("DOMContentLoaded", () => {
+  // Clock
+  updateClock();
+  setInterval(updateClock, 10000);
+  // Greeting
+  const h = new Date().getHours();
+  document.getElementById("heroGreeting").textContent = h<12?"Good morning ☀️":h<17?"Good afternoon 🌤":"Good evening 🌙";
+  // Dates
+  document.getElementById("lDate").value = tod();
+  document.getElementById("lAppDate").value = tod();
+  // Settings URL
+  document.getElementById("settingsUrl").value = GS_URL;
+  // Load
+  setTimeout(() => {
+    document.getElementById("splash").classList.add("hide");
+    loadLeaveStats();
+  }, 1600);
+});
+
+function updateClock() {
+  const n = new Date();
+  document.getElementById("clockTime").textContent =
+    n.getHours().toString().padStart(2,"0")+":"+n.getMinutes().toString().padStart(2,"0");
 }
 
-async function loadHome(){
-  const url = localStorage.getItem("gs_url");
-  if(!url){setSyncState("err","No URL");return;}
-  setSyncState("spin","Loading…");
-  try{
-    const res = await fetch(url+"?action=read&sheet=Annual+Leave");
-    const data = await res.json();
-    if(data.entries){
-      const rows = data.entries.filter(e=>!e.isBF&&e.id!==0);
-      const last = rows[rows.length-1];
-      const rem = last?parseFloat(last.remained):20;
-      const spent = last?parseFloat(last.spent):0;
-      document.getElementById("leaveWidget").textContent = rem+" days remaining";
-      document.getElementById("leaveSnap").innerHTML = `
-        <div class="widget-row-item"><span class="wlabel">Balance</span><span class="wval">20</span></div>
-        <div class="widget-row-item"><span class="wlabel">Spent</span><span class="wval v-red">${spent.toFixed(1)}</span></div>
-        <div class="widget-row-item"><span class="wlabel">Remaining</span><span class="wval v-green">${rem.toFixed(1)}</span></div>
-        <div class="widget-row-item"><span class="wlabel">Entries</span><span class="wval">${rows.length}</span></div>
-      `;
+function tod() { return new Date().toISOString().slice(0,10); }
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+function openScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+
+  if (name === "leave") {
+    document.getElementById("screen-leave").classList.add("active");
+    document.getElementById("tab-leave").classList.add("active");
+    loadLeave();
+  } else if (name === "home") {
+    document.getElementById("screen-home").classList.add("active");
+    document.getElementById("tab-home").classList.add("active");
+  } else if (PAGE_CONFIG[name]) {
+    loadGeneric(name);
+    document.getElementById("screen-generic").classList.add("active");
+  }
+  currentScreen = name;
+  // scroll to top
+  const el = document.getElementById("screen-"+name) || document.getElementById("screen-generic");
+  if (el) el.scrollTop = 0;
+}
+
+function goHome() { openScreen("home"); }
+function showTab(t) { openScreen(t); }
+function goSettings() {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("screen-settings").classList.add("active");
+  document.getElementById("tab-settings").classList.add("active");
+  currentScreen = "settings";
+}
+
+function toggleForm(id) {
+  const el = document.getElementById(id);
+  const btn = el.previousElementSibling.querySelector(".form-card-toggle");
+  if (el.style.display === "none") { el.style.display = "block"; btn.textContent = "Hide ↑"; }
+  else { el.style.display = "none"; btn.textContent = "Show ↓"; }
+}
+
+// ══════════════════════════════════════════
+//  GS FETCH
+// ══════════════════════════════════════════
+async function gsFetch(params) {
+  const url = GS_URL + "?" + new URLSearchParams(params).toString();
+  const res = await fetch(url);
+  const txt = await res.text();
+  try { return JSON.parse(txt); }
+  catch(e) { throw new Error("Bad response: " + txt.slice(0,80)); }
+}
+
+// ══════════════════════════════════════════
+//  LEAVE
+// ══════════════════════════════════════════
+async function loadLeaveStats() {
+  try {
+    const data = await gsFetch({ action:"read", sheet:"Annual Leave" });
+    leaveEntries = data.entries || [];
+    updateLeaveHero();
+  } catch(e) {}
+}
+
+async function loadLeave() {
+  document.getElementById("leaveList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>';
+  try {
+    const data = await gsFetch({ action:"read", sheet:"Annual Leave" });
+    leaveEntries = data.entries || [];
+    renderLeave();
+    updateLeaveHero();
+  } catch(e) {
+    document.getElementById("leaveList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--red);font-size:13px">Could not load data</div>';
+    toast("Error: "+e.message, "err");
+  }
+}
+
+function updateLeaveHero() {
+  const rows = leaveEntries.filter(e => !e.isBF && e.id !== 0 && e.id !== "0");
+  const last = rows[rows.length-1];
+  const rem  = last ? parseFloat(last.remained) : BALANCE;
+  const spent = last ? parseFloat(last.spent) : 0;
+  document.getElementById("heroLeave").textContent = rem.toFixed(1)+" d";
+  document.getElementById("heroUsed").textContent  = spent.toFixed(1)+" d";
+}
+
+function renderLeave() {
+  const rows = leaveEntries.filter(e => !e.isBF && e.id !== 0 && e.id !== "0");
+  const last = rows[rows.length-1];
+  const spent = last ? parseFloat(last.spent) : 0;
+  const rem   = last ? parseFloat(last.remained) : BALANCE;
+  const pct   = Math.round(spent/BALANCE*100);
+
+  document.getElementById("lSpent").textContent = spent.toFixed(1);
+  document.getElementById("lRem").textContent   = rem.toFixed(1);
+  document.getElementById("lRem").className = "stat-pill-val " + (rem<=3?"r":rem<=7?"":"g");
+  document.getElementById("lProgBar").style.width = pct+"%";
+  document.getElementById("lCount").textContent = rows.length+" entries";
+
+  const list = document.getElementById("leaveList");
+  if (!rows.length) {
+    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No entries yet. Add one above.</div>';
+    return;
+  }
+  list.innerHTML = [...rows].reverse().map(e => {
+    const rem2 = parseFloat(e.remained);
+    const cls = rem2<=3?"r":rem2<=7?"":"g";
+    return `<div class="entry-card" onclick="openLeaveEdit(${JSON.stringify(e).replace(/"/g,"&quot;")})">
+      <div class="entry-icon" style="background:rgba(0,184,148,.2)">🌴</div>
+      <div class="entry-info">
+        <div class="entry-title">${e.reason||"Leave"} ${e.remark?"· "+e.remark:""}</div>
+        <div class="entry-sub">${fmtDate(e.date)}</div>
+      </div>
+      <div class="entry-right">
+        <div class="entry-val ${cls}">${parseFloat(e.applied).toFixed(1)}d</div>
+        <div class="entry-date">${parseFloat(e.remained).toFixed(1)} left</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function addLeave() {
+  const date   = document.getElementById("lDate").value;
+  const days   = parseFloat(document.getElementById("lDays").value);
+  const reason = document.getElementById("lReason").value || "Other";
+  const remark = document.getElementById("lRemark").value.trim();
+  const appDate= document.getElementById("lAppDate").value;
+  const addCal = document.getElementById("lCal").checked;
+
+  if (!date || !days || days<=0) { toast("Fill in date and days","err"); return; }
+
+  const btn = document.getElementById("lAddBtn");
+  btn.disabled=true; btn.textContent="Saving…";
+  try {
+    const data = await gsFetch({action:"add",sheet:"Annual Leave",date,applied:days,reason,remark,appDate});
+    if (data.error) throw new Error(data.error);
+    toast("Entry saved ✓","ok");
+    document.getElementById("lDays").value="";
+    document.getElementById("lRemark").value="";
+    document.getElementById("lReason").value="";
+    await loadLeave();
+    if (addCal) addToCalendar({date,applied:days,reason,remark});
+  } catch(e) { toast("Error: "+e.message,"err"); }
+  finally { btn.disabled=false; btn.textContent="+ Add Entry"; }
+}
+
+function openLeaveEdit(e) {
+  editData = e; editSheet = "Annual Leave";
+  document.getElementById("sheetTitle").textContent = "Edit Leave Entry";
+  document.getElementById("sheetBody").innerHTML = `
+    <input type="hidden" id="sheetId" value="${e.id}"/>
+    <div class="f-row">
+      <div class="f-field"><label>Date</label><input type="date" id="sDate" value="${e.date||""}"/></div>
+      <div class="f-field"><label>Days</label><input type="number" id="sDays" min="0.5" step="0.5" value="${e.applied||""}"/></div>
+    </div>
+    <div class="f-field"><label>Reason</label>
+      <select id="sReason">
+        ${["Busy at home","Going to province","Going to homeland","Children Graduation","Medical","Other"].map(o=>`<option ${e.reason===o?"selected":""}>${o}</option>`).join("")}
+      </select>
+    </div>
+    <div class="f-field"><label>Remark</label><input type="text" id="sRemark" value="${e.remark||""}"/></div>
+    <div class="f-field"><label>Application date</label><input type="date" id="sAppDate" value="${e.appDate||""}"/></div>
+  `;
+  document.getElementById("editSheet").classList.add("open");
+}
+
+async function saveEntry() {
+  if (editSheet === "Annual Leave") {
+    const id      = document.getElementById("sheetId").value;
+    const date    = document.getElementById("sDate").value;
+    const applied = parseFloat(document.getElementById("sDays").value);
+    const reason  = document.getElementById("sReason").value;
+    const remark  = document.getElementById("sRemark").value.trim();
+    const appDate = document.getElementById("sAppDate").value;
+    if (!date||!applied||applied<=0){ toast("Fill in date and days","err"); return; }
+    try {
+      await gsFetch({action:"delete",sheet:"Annual Leave",id});
+      await gsFetch({action:"add",sheet:"Annual Leave",date,applied,reason,remark,appDate});
+      toast("Updated ✓","ok"); closeSheetDirect(); await loadLeave();
+    } catch(e) { toast("Error: "+e.message,"err"); }
+  } else {
+    const id = document.getElementById("sheetId").value;
+    const params = {action:"update", sheet:editSheet, id};
+    const cfg = currentConfig;
+    if (cfg) {
+      cfg.fields.forEach(f => {
+        const el = document.getElementById("s_"+f.n.replace(/ /g,"_"));
+        if (el) params[f.n] = el.value.trim();
+      });
     }
-    setSyncState("ok","Synced");
-  }catch(e){setSyncState("err","Error");}
+    try {
+      const data = await gsFetch(params);
+      if (data.error) throw new Error(data.error);
+      toast("Updated ✓","ok"); closeSheetDirect(); await loadGenericData(currentScreen);
+    } catch(e) { toast("Error: "+e.message,"err"); }
+  }
 }
 
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
-function syncPage(){loadHome()}
+async function deleteEntry() {
+  const id = document.getElementById("sheetId").value;
+  const sheet = editSheet;
+  if (!confirm("Delete this entry?")) return;
+  try {
+    await gsFetch({action:"delete", sheet, id});
+    toast("Deleted","ok"); closeSheetDirect();
+    if (sheet === "Annual Leave") await loadLeave();
+    else await loadGenericData(currentScreen);
+  } catch(e) { toast("Error: "+e.message,"err"); }
+}
 
-// Set active nav
-document.querySelectorAll("nav a[data-page]").forEach(a=>a.classList.toggle("active",a.dataset.page==="index.html"));
-const inp=document.getElementById("urlInput");
-if(inp&&localStorage.getItem("gs_url"))inp.value=localStorage.getItem("gs_url");
+function closeSheet(evt) {
+  if (evt.target === document.getElementById("editSheet")) closeSheetDirect();
+}
+function closeSheetDirect() {
+  document.getElementById("editSheet").classList.remove("open");
+  editData = null;
+}
 
-if(localStorage.getItem("gs_url")) loadHome();
+// ══════════════════════════════════════════
+//  GENERIC SCREENS
+// ══════════════════════════════════════════
+function loadGeneric(name) {
+  const cfg = PAGE_CONFIG[name];
+  if (!cfg) return;
+  currentConfig = cfg;
+  document.getElementById("genericTitle").textContent = cfg.icon+" "+cfg.label;
+
+  // Build form fields
+  let html = "";
+  // Group pairs of fields in rows
+  for (let i=0; i<cfg.fields.length; i+=2) {
+    const f1 = cfg.fields[i], f2 = cfg.fields[i+1];
+    if (f2) {
+      html += `<div class="f-row">${makeField(f1,"f_")}&nbsp;${makeField(f2,"f_")}</div>`;
+    } else {
+      html += makeField(f1,"f_");
+    }
+  }
+  document.getElementById("genericFields").innerHTML = html;
+  // Set date defaults
+  cfg.fields.forEach(f => {
+    if (f.t==="date") { const el=document.getElementById("f_"+f.n.replace(/ /g,"_")); if(el)el.value=tod(); }
+  });
+  loadGenericData(name);
+}
+
+function makeField(f, prefix) {
+  const id = prefix + f.n.replace(/ /g,"_");
+  if (f.t==="select") {
+    const opts = f.o.map(o=>`<option>${o}</option>`).join("");
+    return `<div class="f-field"><label>${f.n}</label><select id="${id}"><option value="">Select…</option>${opts}</select></div>`;
+  }
+  return `<div class="f-field"><label>${f.n}</label><input type="${f.t}" id="${id}" placeholder="${f.n}"/></div>`;
+}
+
+async function loadGenericData(name) {
+  const cfg = PAGE_CONFIG[name];
+  document.getElementById("genericList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>';
+  try {
+    const data = await gsFetch({action:"read", sheet:cfg.sheet});
+    genericRows = data.entries || data.rows || [];
+    renderGeneric(cfg);
+  } catch(e) {
+    document.getElementById("genericList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--red);font-size:13px">Could not load</div>';
+  }
+}
+
+function renderGeneric(cfg) {
+  document.getElementById("gCount").textContent = genericRows.length+" entries";
+  const list = document.getElementById("genericList");
+  if (!genericRows.length) {
+    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No entries yet.</div>';
+    return;
+  }
+  const titleCol  = cfg.cols[0];
+  const subCol    = cfg.cols[1] || "";
+  const valCol    = cfg.cols[2] || "";
+
+  list.innerHTML = [...genericRows].reverse().map(row => {
+    const id = row._id || row.id || row._rowIndex;
+    const rj = JSON.stringify(row).replace(/"/g,"&quot;");
+    return `<div class="entry-card" onclick="openGenericEdit(${rj})">
+      <div class="entry-icon" style="font-size:22px;background:rgba(108,92,231,.2)">${cfg.icon}</div>
+      <div class="entry-info">
+        <div class="entry-title">${row[titleCol]||"–"}</div>
+        <div class="entry-sub">${row[subCol]||""}</div>
+      </div>
+      <div class="entry-right">
+        <div class="entry-val" style="color:var(--text2);font-size:12px">${row[valCol]||""}</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function addGeneric() {
+  const cfg = currentConfig;
+  const params = {action:"add", sheet:cfg.sheet};
+  cfg.fields.forEach(f => {
+    const el = document.getElementById("f_"+f.n.replace(/ /g,"_"));
+    params[f.n] = el ? el.value.trim() : "";
+  });
+  const btn = document.getElementById("gAddBtn");
+  btn.disabled=true; btn.textContent="Saving…";
+  try {
+    const data = await gsFetch(params);
+    if (data.error) throw new Error(data.error);
+    toast("Saved ✓","ok");
+    cfg.fields.forEach(f => {
+      const el = document.getElementById("f_"+f.n.replace(/ /g,"_"));
+      if (el && f.t !== "date") el.value = "";
+    });
+    await loadGenericData(currentScreen);
+  } catch(e) { toast("Error: "+e.message,"err"); }
+  finally { btn.disabled=false; btn.textContent="+ Add Entry"; }
+}
+
+function openGenericEdit(row) {
+  editData = row; editSheet = currentConfig.sheet;
+  const cfg = currentConfig;
+  const id = row._id || row.id || row._rowIndex;
+  document.getElementById("sheetTitle").textContent = "Edit "+cfg.label;
+  let html = `<input type="hidden" id="sheetId" value="${id}"/>`;
+  cfg.fields.forEach(f => {
+    const fid = "s_"+f.n.replace(/ /g,"_");
+    const val = row[f.n] || "";
+    if (f.t==="select") {
+      const opts = f.o.map(o=>`<option ${val===o?"selected":""}>${o}</option>`).join("");
+      html += `<div class="f-field"><label>${f.n}</label><select id="${fid}"><option value="">Select…</option>${opts}</select></div>`;
+    } else {
+      html += `<div class="f-field"><label>${f.n}</label><input type="${f.t}" id="${fid}" value="${val}"/></div>`;
+    }
+  });
+  document.getElementById("sheetBody").innerHTML = html;
+  document.getElementById("editSheet").classList.add("open");
+}
+
+// ══════════════════════════════════════════
+//  CALENDAR
+// ══════════════════════════════════════════
+function addToCalendar(e) {
+  const title = "Leave - "+(e.reason||"Day off")+(e.remark?" ("+e.remark+")":"");
+  const d = (e.date||"").replace(/-/g,"");
+  const end = new Date(e.date); end.setDate(end.getDate()+Math.ceil(parseFloat(e.applied||1)));
+  const endStr = end.toISOString().slice(0,10).replace(/-/g,"");
+  window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${d}/${endStr}&details=${encodeURIComponent("Days: "+(e.applied||1))}&trp=false`,"_blank");
+}
+
+// ══════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════
+function saveSettings() {
+  toast("URL is pre-configured","ok");
+}
+
+async function testConn() {
+  document.getElementById("connDot").style.background="var(--amber)";
+  document.getElementById("connLabel").textContent="Testing…";
+  try {
+    const data = await gsFetch({action:"read",sheet:"Annual Leave"});
+    if (data.entries || data.rows) {
+      document.getElementById("connDot").style.background="var(--green)";
+      document.getElementById("connLabel").textContent="Connected ✓";
+      toast("Connection OK","ok");
+    } else throw new Error("No data");
+  } catch(e) {
+    document.getElementById("connDot").style.background="var(--red)";
+    document.getElementById("connLabel").textContent="Failed: "+e.message;
+    toast("Connection failed","err");
+  }
+}
+
+// ══════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════
+function fmtDate(d) {
+  if (!d) return "–";
+  const p = String(d).split("-");
+  if (p.length!==3) return d;
+  const m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return `${p[2]}-${m[parseInt(p[1])-1]}-${p[0]}`;
+}
+
+function toast(msg, type) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (type==="err"?" err":type==="ok"?" ok":"");
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.className="toast",2800);
+}
 </script>
 </body>
 </html>
