@@ -736,24 +736,37 @@ async function loadLeave() {
 }
 
 function updateLeaveHero() {
-  const rows = leaveEntries.filter(e => !e.isBF && e.id !== 0 && e.id !== "0");
-  const last = rows[rows.length-1];
-  const rem  = last ? parseFloat(last.remained) : BALANCE;
-  const spent = last ? parseFloat(last.spent) : 0;
+  const rows  = leaveEntries.filter(e => !lIsBF(e));
+  const last  = rows[rows.length-1];
+  const rem   = last && !isNaN(lRemained(last)) ? lRemained(last) : BALANCE;
+  const spent = last && !isNaN(lSpent(last))    ? lSpent(last)    : 0;
   document.getElementById("heroLeave").textContent = rem.toFixed(1)+" d";
   document.getElementById("heroUsed").textContent  = spent.toFixed(1)+" d";
 }
 
+// ── Column resolvers: handles both short ("spent") and full ("Leave Spent") header names ──
+function lv(e,...keys){ for(const k of keys){const v=e[k];if(v!==undefined&&v!=="")return parseFloat(v);}return NaN; }
+function ls(e,...keys){ for(const k of keys){if(e[k]!==undefined&&e[k]!=="")return String(e[k]);}return ""; }
+const lSpent    = e => lv(e,"spent","Leave Spent","Spent");
+const lRemained = e => lv(e,"remained","Leave Remained","Remained");
+const lApplied  = e => lv(e,"applied","Leave Applied","Applied","Days Applied");
+const lDate     = e => ls(e,"date","Leave Taken Date","Date");
+const lReason   = e => ls(e,"reason","Leave Reason","Reason");
+const lRemark   = e => ls(e,"remark","Leave Personal Remark","Remark");
+const lAppDate  = e => ls(e,"appDate","Leave Application Date","Application Date");
+const lId       = e => ls(e,"id","App No.","App No","_rowIndex");
+const lIsBF     = e => e.isBF===true || lId(e)==="0" || lDate(e)==="";
+
 function renderLeave() {
-  const rows = leaveEntries.filter(e => !e.isBF && e.id !== 0 && e.id !== "0");
-  const last = rows[rows.length-1];
-  const spent = last ? parseFloat(last.spent) : 0;
-  const rem   = last ? parseFloat(last.remained) : BALANCE;
-  const pct   = Math.round(spent/BALANCE*100);
+  const rows = leaveEntries.filter(e => !lIsBF(e));
+  const last  = rows[rows.length-1];
+  const spent = last && !isNaN(lSpent(last))    ? lSpent(last)    : 0;
+  const rem   = last && !isNaN(lRemained(last)) ? lRemained(last) : BALANCE;
+  const pct   = Math.min(Math.round(spent/BALANCE*100), 100);
 
   document.getElementById("lSpent").textContent = spent.toFixed(1);
   document.getElementById("lRem").textContent   = rem.toFixed(1);
-  document.getElementById("lRem").className = "stat-pill-val " + (rem<=3?"r":rem<=7?"":"g");
+  document.getElementById("lRem").className = "stat-pill-val "+(rem<=3?"r":rem<=7?"":"g");
   document.getElementById("lProgBar").style.width = pct+"%";
   document.getElementById("lCount").textContent = rows.length+" entries";
 
@@ -763,17 +776,19 @@ function renderLeave() {
     return;
   }
   list.innerHTML = [...rows].reverse().map(e => {
-    const rem2 = parseFloat(e.remained);
-    const cls = rem2<=3?"r":rem2<=7?"":"g";
-    return `<div class="entry-card" onclick="openLeaveEdit(${JSON.stringify(e).replace(/"/g,"&quot;")})">
+    const r2  = lRemained(e);
+    const ap  = lApplied(e);
+    const cls = isNaN(r2)||r2<=3?"r":r2<=7?"":"g";
+    const ej  = JSON.stringify(e).replace(/"/g,"&quot;");
+    return `<div class="entry-card" onclick="openLeaveEdit(${ej})">
       <div class="entry-icon" style="background:rgba(0,184,148,.2)">🌴</div>
       <div class="entry-info">
-        <div class="entry-title">${e.reason||"Leave"} ${e.remark?"· "+e.remark:""}</div>
-        <div class="entry-sub">${fmtDate(e.date)}</div>
+        <div class="entry-title">${lReason(e)||"Leave"}${lRemark(e)?" · "+lRemark(e):""}</div>
+        <div class="entry-sub">${fmtDate(lDate(e))}</div>
       </div>
       <div class="entry-right">
-        <div class="entry-val ${cls}">${parseFloat(e.applied).toFixed(1)}d</div>
-        <div class="entry-date">${parseFloat(e.remained).toFixed(1)} left</div>
+        <div class="entry-val ${cls}">${isNaN(ap)?"–":ap.toFixed(1)+"d"}</div>
+        <div class="entry-date">${isNaN(r2)?"–":r2.toFixed(1)+" left"}</div>
       </div>
     </div>`;
   }).join("");
@@ -794,32 +809,33 @@ async function addLeave() {
   try {
     const data = await gsFetch({action:"add",sheet:"Annual Leave",date,applied:days,reason,remark,appDate});
     if (data.error) throw new Error(data.error);
-    toast("Entry saved ✓","ok");
     document.getElementById("lDays").value="";
     document.getElementById("lRemark").value="";
     document.getElementById("lReason").value="";
     await loadLeave();
-    if (addCal) addToCalendar({date,applied:days,reason,remark});
+    if (addCal) silentCalendar({date, applied:days, reason, remark});
+    toast(addCal ? "Saved & added to Calendar ✓" : "Entry saved ✓","ok");
   } catch(e) { toast("Error: "+e.message,"err"); }
   finally { btn.disabled=false; btn.textContent="+ Add Entry"; }
 }
 
 function openLeaveEdit(e) {
   editData = e; editSheet = "Annual Leave";
+  const id = lId(e);
   document.getElementById("sheetTitle").textContent = "Edit Leave Entry";
   document.getElementById("sheetBody").innerHTML = `
-    <input type="hidden" id="sheetId" value="${e.id}"/>
+    <input type="hidden" id="sheetId" value="${id}"/>
     <div class="f-row">
-      <div class="f-field"><label>Date</label><input type="date" id="sDate" value="${e.date||""}"/></div>
-      <div class="f-field"><label>Days</label><input type="number" id="sDays" min="0.5" step="0.5" value="${e.applied||""}"/></div>
+      <div class="f-field"><label>Date</label><input type="date" id="sDate" value="${lDate(e)}"/></div>
+      <div class="f-field"><label>Days</label><input type="number" id="sDays" min="0.5" step="0.5" value="${isNaN(lApplied(e))?"":lApplied(e)}"/></div>
     </div>
     <div class="f-field"><label>Reason</label>
       <select id="sReason">
-        ${["Busy at home","Going to province","Going to homeland","Children Graduation","Medical","Other"].map(o=>`<option ${e.reason===o?"selected":""}>${o}</option>`).join("")}
+        ${["Busy at home","Going to province","Going to homeland","Children Graduation","Medical","Other"].map(o=>`<option ${lReason(e)===o?"selected":""}>${o}</option>`).join("")}
       </select>
     </div>
-    <div class="f-field"><label>Remark</label><input type="text" id="sRemark" value="${e.remark||""}"/></div>
-    <div class="f-field"><label>Application date</label><input type="date" id="sAppDate" value="${e.appDate||""}"/></div>
+    <div class="f-field"><label>Remark</label><input type="text" id="sRemark" value="${lRemark(e)}"/></div>
+    <div class="f-field"><label>Application date</label><input type="date" id="sAppDate" value="${lAppDate(e)}"/></div>
   `;
   document.getElementById("editSheet").classList.add("open");
 }
@@ -995,14 +1011,39 @@ function openGenericEdit(row) {
 }
 
 // ══════════════════════════════════════════
-//  CALENDAR
+//  CALENDAR — silent auto-add via Apps Script
 // ══════════════════════════════════════════
-function addToCalendar(e) {
-  const title = "Leave - "+(e.reason||"Day off")+(e.remark?" ("+e.remark+")":"");
-  const d = (e.date||"").replace(/-/g,"");
-  const end = new Date(e.date); end.setDate(end.getDate()+Math.ceil(parseFloat(e.applied||1)));
-  const endStr = end.toISOString().slice(0,10).replace(/-/g,"");
-  window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${d}/${endStr}&details=${encodeURIComponent("Days: "+(e.applied||1))}&trp=false`,"_blank");
+// Strategy: call your Apps Script with action=addCalendar.
+// The GS adds the event server-side using CalendarApp — no redirect needed.
+// Falls back to opening a pre-filled Google Calendar URL if the GS returns an error.
+async function silentCalendar(e) {
+  const title   = "🌴 Leave"+(e.reason?" – "+e.reason:"")+(e.remark?" ("+e.remark+")":"");
+  const date    = e.date || "";
+  const applied = parseFloat(e.applied) || 1;
+
+  try {
+    const data = await gsFetch({
+      action:"addCalendar",
+      title, date, days: applied,
+      description: "Leave: "+(e.reason||"")+" | Remark: "+(e.remark||"")+" | Days: "+applied
+    });
+    if (data && data.ok) {
+      // Added silently — no redirect needed
+      return;
+    }
+    throw new Error(data?.error || "GS calendar failed");
+  } catch(err) {
+    // Fallback: open pre-filled Google Calendar tab
+    const d   = date.replace(/-/g,"");
+    const end = new Date(date); end.setDate(end.getDate() + Math.ceil(applied));
+    const eStr= end.toISOString().slice(0,10).replace(/-/g,"");
+    window.open(
+      `https://calendar.google.com/calendar/render?action=TEMPLATE`+
+      `&text=${encodeURIComponent(title)}&dates=${d}/${eStr}`+
+      `&details=${encodeURIComponent("Days: "+applied)}&trp=false`,
+      "_blank"
+    );
+  }
 }
 
 // ══════════════════════════════════════════
