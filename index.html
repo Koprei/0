@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MyRecord — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="_shared.css"/>
+<style>
+.home-hero{padding:2.5rem 0 1.5rem;text-align:center}
+.home-hero h1{font-size:clamp(28px,5vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:.5rem}
+.home-hero p{font-size:15px;color:var(--text2);max-width:440px;margin:0 auto}
+.home-hero .greeting{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.75rem}
+.section-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:2rem}
+.section-card{
+  background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh);
+  padding:1.25rem;text-decoration:none;color:var(--text);
+  display:flex;flex-direction:column;gap:10px;
+  transition:transform .15s,box-shadow .15s;border:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.section-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--card-color,var(--accent));
+}
+.section-card:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.section-card-icon{font-size:26px;line-height:1}
+.section-card-title{font-size:14px;font-weight:600;line-height:1.3}
+.section-card-desc{font-size:12px;color:var(--text3);line-height:1.5}
+.section-card-count{
+  margin-top:auto;font-size:11px;font-weight:600;
+  font-family:'JetBrains Mono',monospace;color:var(--text3);
+}
+.quick-section{margin-bottom:1.5rem}
+.quick-section h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:10px}
+.widget-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.widget{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);padding:1rem}
+.widget-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.widget-title a{color:var(--accent);font-size:11px;margin-left:auto;text-decoration:none;font-weight:500}
+.widget-title a:hover{text-decoration:underline}
+.widget-row-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.widget-row-item:last-child{border-bottom:none}
+.widget-row-item .wlabel{color:var(--text2)}
+.widget-row-item .wval{font-weight:600;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg viewBox="0 0 20 20"><path d="M2 5h16M2 10h16M2 15h16"/></svg>
+    </button>
+    <a class="brand" href="index.html">
+      <div class="brand-mark">
+        <svg viewBox="0 0 17 17"><rect x="2" y="2" width="6" height="6" rx="1.5"/><rect x="9" y="2" width="6" height="6" rx="1.5"/><rect x="2" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+      </div>
+      MyRecord
+    </a>
+  </div>
+  <div class="topbar-right">
+    <button class="sync-pill" onclick="loadHome()">
+      <div class="sdot" id="sdot"></div>
+      <span id="slabel">Ready</span>
+    </button>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+    <div class="nav-section">
+      <span class="nav-label">Overview</span>
+      <nav>
+        <a href="index.html" data-page="index.html"><span class="nav-icon">🏠</span>Home</a>
+        <a href="task.html" data-page="task.html"><span class="nav-icon">✅</span>Task</a>
+      </nav>
+    </div>
+    <div class="nav-section">
+      <span class="nav-label">Personal</span>
+      <nav>
+        <a href="leave.html" data-page="leave.html"><span class="nav-icon">🌴</span>Annual Leave</a>
+        <a href="finance.html" data-page="finance.html"><span class="nav-icon">💰</span>Finance</a>
+        <a href="health.html" data-page="health.html"><span class="nav-icon">❤️</span>Health</a>
+        <a href="family.html" data-page="family.html"><span class="nav-icon">👨‍👩‍👧</span>Family</a>
+      </nav>
+    </div>
+    <div class="nav-section">
+      <span class="nav-label">Growth</span>
+      <nav>
+        <a href="study.html" data-page="study.html"><span class="nav-icon">📚</span>Study</a>
+        <a href="trip.html" data-page="trip.html"><span class="nav-icon">✈️</span>Trip Plans</a>
+        <a href="plans.html" data-page="plans.html"><span class="nav-icon">🎯</span>Plans</a>
+      </nav>
+    </div>
+    <div class="nav-section">
+      <span class="nav-label">Digital</span>
+      <nav>
+        <a href="digi.html" data-page="digi.html"><span class="nav-icon">🔐</span>Digi Asset</a>
+        <a href="calendar.html" data-page="calendar.html"><span class="nav-icon">📅</span>Calendar</a>
+        <a href="contact.html" data-page="contact.html"><span class="nav-icon">👤</span>Contact</a>
+      </nav>
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="url-config">
+      <label>Apps Script URL</label>
+      <input type="url" id="urlInput" placeholder="https://script.google.com/macros/s/.../exec"/>
+      <button class="btn btn-ghost" onclick="saveUrl()">Save & connect</button>
+    </div>
+  </div>
+</aside>
+
+<div class="page" id="page">
+  <div class="page-inner">
+    <div class="home-hero">
+      <div class="greeting" id="greeting">Good morning</div>
+      <h1>Your personal<br>record hub</h1>
+      <p>All your sheets in one place — tap any section to view, add, or edit entries directly.</p>
+    </div>
+
+    <div class="quick-section">
+      <h2>All sections</h2>
+      <div class="section-grid">
+        <a class="section-card" href="task.html" style="--card-color:var(--c-task)">
+          <div class="section-card-icon">✅</div>
+          <div class="section-card-title">Task</div>
+          <div class="section-card-desc">To-dos, priorities, status tracking</div>
+        </a>
+        <a class="section-card" href="leave.html" style="--card-color:var(--c-leave)">
+          <div class="section-card-icon">🌴</div>
+          <div class="section-card-title">Annual Leave</div>
+          <div class="section-card-desc">Leave balance, history, calendar sync</div>
+          <div class="section-card-count" id="leaveWidget">— days remaining</div>
+        </a>
+        <a class="section-card" href="finance.html" style="--card-color:var(--c-finance)">
+          <div class="section-card-icon">💰</div>
+          <div class="section-card-title">Finance</div>
+          <div class="section-card-desc">Income, expenses, savings goals</div>
+        </a>
+        <a class="section-card" href="health.html" style="--card-color:var(--c-health)">
+          <div class="section-card-icon">❤️</div>
+          <div class="section-card-title">Health</div>
+          <div class="section-card-desc">Weight, vitals, medical records</div>
+        </a>
+        <a class="section-card" href="family.html" style="--card-color:var(--c-family)">
+          <div class="section-card-icon">👨‍👩‍👧</div>
+          <div class="section-card-title">Family</div>
+          <div class="section-card-desc">Family events, records, reminders</div>
+        </a>
+        <a class="section-card" href="study.html" style="--card-color:var(--c-study)">
+          <div class="section-card-icon">📚</div>
+          <div class="section-card-title">Study</div>
+          <div class="section-card-desc">Courses, progress, notes</div>
+        </a>
+        <a class="section-card" href="trip.html" style="--card-color:var(--c-trip)">
+          <div class="section-card-icon">✈️</div>
+          <div class="section-card-title">Trip Plans</div>
+          <div class="section-card-desc">Destinations, itineraries, budgets</div>
+        </a>
+        <a class="section-card" href="plans.html" style="--card-color:var(--c-plans)">
+          <div class="section-card-icon">🎯</div>
+          <div class="section-card-title">Plans</div>
+          <div class="section-card-desc">Goals, milestones, timelines</div>
+        </a>
+        <a class="section-card" href="digi.html" style="--card-color:var(--c-digi)">
+          <div class="section-card-icon">🔐</div>
+          <div class="section-card-title">Digi Asset</div>
+          <div class="section-card-desc">Accounts, subscriptions, crypto</div>
+        </a>
+        <a class="section-card" href="calendar.html" style="--card-color:var(--c-cal)">
+          <div class="section-card-icon">📅</div>
+          <div class="section-card-title">Calendar</div>
+          <div class="section-card-desc">Events, reminders, schedule</div>
+        </a>
+        <a class="section-card" href="contact.html" style="--card-color:var(--c-contact)">
+          <div class="section-card-icon">👤</div>
+          <div class="section-card-title">Contact</div>
+          <div class="section-card-desc">People, notes, relationships</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="widget-row">
+      <div class="widget">
+        <div class="widget-title">🌴 Leave snapshot <a href="leave.html">View all →</a></div>
+        <div id="leaveSnap"><div class="empty"><p>Connect to load data</p></div></div>
+      </div>
+      <div class="widget">
+        <div class="widget-title">📅 Today <a href="calendar.html">Calendar →</a></div>
+        <div id="todayWidget">
+          <div class="widget-row-item"><span class="wlabel">Date</span><span class="wval" id="wDate">–</span></div>
+          <div class="widget-row-item"><span class="wlabel">Day</span><span class="wval" id="wDay">–</span></div>
+          <div class="widget-row-item"><span class="wlabel">Week</span><span class="wval" id="wWeek">–</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="_toast" class="toast"></div>
+
+<script src="_shared.js"></script>
+<script>
+// Greeting
+const h = new Date().getHours();
+document.getElementById("greeting").textContent = h<12?"Good morning ☀️":h<17?"Good afternoon 🌤":"Good evening 🌙";
+
+// Today widget
+const now = new Date();
+const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+document.getElementById("wDate").textContent = now.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+document.getElementById("wDay").textContent = days[now.getDay()];
+const jan1 = new Date(now.getFullYear(),0,1);
+document.getElementById("wWeek").textContent = "W" + Math.ceil(((now-jan1)/86400000+jan1.getDay()+1)/7);
+
+function saveUrl(){
+  const v = document.getElementById("urlInput").value.trim();
+  if(!v){toast("Paste your Apps Script URL","err");return;}
+  localStorage.setItem("gs_url",v);
+  toast("Saved — loading data…","ok");
+  loadHome();
+}
+
+async function loadHome(){
+  const url = localStorage.getItem("gs_url");
+  if(!url){setSyncState("err","No URL");return;}
+  setSyncState("spin","Loading…");
+  try{
+    const res = await fetch(url+"?action=read&sheet=Annual+Leave");
+    const data = await res.json();
+    if(data.entries){
+      const rows = data.entries.filter(e=>!e.isBF&&e.id!==0);
+      const last = rows[rows.length-1];
+      const rem = last?parseFloat(last.remained):20;
+      const spent = last?parseFloat(last.spent):0;
+      document.getElementById("leaveWidget").textContent = rem+" days remaining";
+      document.getElementById("leaveSnap").innerHTML = `
+        <div class="widget-row-item"><span class="wlabel">Balance</span><span class="wval">20</span></div>
+        <div class="widget-row-item"><span class="wlabel">Spent</span><span class="wval v-red">${spent.toFixed(1)}</span></div>
+        <div class="widget-row-item"><span class="wlabel">Remaining</span><span class="wval v-green">${rem.toFixed(1)}</span></div>
+        <div class="widget-row-item"><span class="wlabel">Entries</span><span class="wval">${rows.length}</span></div>
+      `;
+    }
+    setSyncState("ok","Synced");
+  }catch(e){setSyncState("err","Error");}
+}
+
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function syncPage(){loadHome()}
+
+// Set active nav
+document.querySelectorAll("nav a[data-page]").forEach(a=>a.classList.toggle("active",a.dataset.page==="index.html"));
+const inp=document.getElementById("urlInput");
+if(inp&&localStorage.getItem("gs_url"))inp.value=localStorage.getItem("gs_url");
+
+if(localStorage.getItem("gs_url")) loadHome();
+</script>
+</body>
+</html>

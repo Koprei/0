@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Health — MyRecord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="_shared.css"/>
+</head><body>
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="toggleSidebar()"><svg viewBox="0 0 20 20"><path d="M2 5h16M2 10h16M2 15h16"/></svg></button>
+    <a class="brand" href="index.html"><div class="brand-mark"><svg viewBox="0 0 17 17"><rect x="2" y="2" width="6" height="6" rx="1.5"/><rect x="9" y="2" width="6" height="6" rx="1.5"/><rect x="2" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg></div>MyRecord</a>
+  </div>
+  <div class="topbar-right"><button class="sync-pill" onclick="syncPage()"><div class="sdot" id="sdot"></div><span id="slabel">Loading…</span></button></div>
+</div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+    <div class="nav-section"><span class="nav-label">Overview</span><nav>
+      <a href="index.html" data-page="index.html"><span class="nav-icon">🏠</span>Home</a>
+      <a href="task.html" data-page="task.html"><span class="nav-icon">✅</span>Task</a>
+    </nav></div>
+    <div class="nav-section"><span class="nav-label">Personal</span><nav>
+      <a href="leave.html" data-page="leave.html"><span class="nav-icon">🌴</span>Annual Leave</a>
+      <a href="finance.html" data-page="finance.html"><span class="nav-icon">💰</span>Finance</a>
+      <a href="health.html" data-page="health.html"><span class="nav-icon">❤️</span>Health</a>
+      <a href="family.html" data-page="family.html"><span class="nav-icon">👨‍👩‍👧</span>Family</a>
+    </nav></div>
+    <div class="nav-section"><span class="nav-label">Growth</span><nav>
+      <a href="study.html" data-page="study.html"><span class="nav-icon">📚</span>Study</a>
+      <a href="trip.html" data-page="trip.html"><span class="nav-icon">✈️</span>Trip Plans</a>
+      <a href="plans.html" data-page="plans.html"><span class="nav-icon">🎯</span>Plans</a>
+    </nav></div>
+    <div class="nav-section"><span class="nav-label">Digital</span><nav>
+      <a href="digi.html" data-page="digi.html"><span class="nav-icon">🔐</span>Digi Asset</a>
+      <a href="calendar.html" data-page="calendar.html"><span class="nav-icon">📅</span>Calendar</a>
+      <a href="contact.html" data-page="contact.html"><span class="nav-icon">👤</span>Contact</a>
+    </nav></div>
+  </div>
+  <div class="sidebar-footer"><div class="url-config"><label>Apps Script URL</label><input type="url" id="urlInput" placeholder="https://script.google.com/macros/s/.../exec"/><button class="btn btn-ghost" onclick="saveUrl()">Save & connect</button></div></div>
+</aside>
+<div class="page"><div class="page-inner">
+  <div class="page-header">
+    <div><div class="page-title">❤️ Health</div><div class="page-subtitle">View, add and edit your Health records</div></div>
+    <div class="page-actions"><span class="chip chip-gray" id="rowBadge">–</span><button class="btn btn-ghost" onclick="exportCSV()">↓ CSV</button></div>
+  </div>
+  <div class="two-col">
+    <div class="form-col"><div class="card">
+      <div class="card-header"><h2>Add entry</h2></div>
+      <div class="card-body">
+        <div class="field"><label>Date</label><input type="date" id="f_Date" placeholder="Date"/></div>
+<div class="field"><label>Type</label><select id="f_Type"><option value="">Select…</option><option>Weight</option><option>Blood Pressure</option><option>Heart Rate</option><option>Steps</option><option>Sleep</option><option>Medication</option><option>Doctor Visit</option><option>Other</option></select></div>
+<div class="field"><label>Value</label><input type="text" id="f_Value" placeholder="Value"/></div>
+<div class="field"><label>Unit</label><input type="text" id="f_Unit" placeholder="Unit"/></div>
+<div class="field"><label>Notes</label><input type="text" id="f_Notes" placeholder="Notes"/></div>
+        <button class="btn btn-primary btn-full" id="addBtn" onclick="addRow()" style="margin-top:4px">+ Add entry</button>
+      </div>
+    </div></div>
+    <div class="card">
+      <div class="card-header"><h2>Health records</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th style="width:36px">#</th><th>Date</th><th>Type</th><th>Value</th><th>Unit</th><th>Notes</th></tr></thead>
+        <tbody id="tbody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text3)">Loading…</td></tr></tbody>
+      </table></div>
+    </div>
+  </div>
+</div></div>
+<div id="drawer" class="drawer">
+  <div class="drawer-hdr"><h3>Edit entry</h3><button class="drawer-close" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <input type="hidden" id="editId"/>
+    <div class="field"><label>Date</label><input type="date" id="e_Date" placeholder="Date"/></div>
+<div class="field"><label>Type</label><select id="e_Type"><option value="">Select…</option><option>Weight</option><option>Blood Pressure</option><option>Heart Rate</option><option>Steps</option><option>Sleep</option><option>Medication</option><option>Doctor Visit</option><option>Other</option></select></div>
+<div class="field"><label>Value</label><input type="text" id="e_Value" placeholder="Value"/></div>
+<div class="field"><label>Unit</label><input type="text" id="e_Unit" placeholder="Unit"/></div>
+<div class="field"><label>Notes</label><input type="text" id="e_Notes" placeholder="Notes"/></div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-danger" onclick="deleteRow()">🗑 Delete</button>
+    <button class="btn btn-primary" onclick="saveEdit()">Save changes</button>
+  </div>
+</div>
+<div id="_toast" class="toast"></div>
+<script src="_shared.js"></script>
+<script>
+const SHEET_NAME="Health";
+const FIELDS=[{"type": "date", "name": "Date", "id": "f_Date", "eid": "e_Date"}, {"type": "select", "name": "Type", "id": "f_Type", "eid": "e_Type"}, {"type": "text", "name": "Value", "id": "f_Value", "eid": "e_Value"}, {"type": "text", "name": "Unit", "id": "f_Unit", "eid": "e_Unit"}, {"type": "text", "name": "Notes", "id": "f_Notes", "eid": "e_Notes"}];
+const COLS=["Date", "Type", "Value", "Unit", "Notes"];
+let rows=[], editId=null;
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function saveUrl(){const v=document.getElementById("urlInput").value.trim();if(!v)return;localStorage.setItem("gs_url",v);toast("Saved","ok");syncPage();}
+function closeDrawer(){document.getElementById("drawer").classList.remove("open");editId=null;document.querySelectorAll("tbody tr").forEach(r=>r.classList.remove("selected"));}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll("nav a[data-page]").forEach(a=>a.classList.toggle("active",a.dataset.page==="health.html"));
+  const inp=document.getElementById("urlInput");if(inp&&localStorage.getItem("gs_url"))inp.value=localStorage.getItem("gs_url");
+  FIELDS.forEach(f=>{if(f.type==="date"){const el=document.getElementById(f.id);if(el)el.value=today();}});
+  syncPage();
+});
+async function syncPage(){
+  const url=localStorage.getItem("gs_url");
+  if(!url){setSyncState("err","No URL");return;}
+  setSyncState("spin","Syncing…");
+  try{
+    const res=await fetch(url+"?action=read&sheet="+encodeURIComponent(SHEET_NAME));
+    const data=await res.json();
+    if(data.error)throw new Error(data.error);
+    rows=data.entries||data.rows||[];
+    renderTable();setSyncState("ok","Synced "+new Date().toLocaleTimeString());
+  }catch(e){setSyncState("err","Failed");toast("Error: "+e.message,"err");}
+}
+async function addRow(){
+  const url=localStorage.getItem("gs_url");if(!url){toast("No URL","err");return;}
+  const params={action:"add",sheet:SHEET_NAME};
+  FIELDS.forEach(f=>{const el=document.getElementById(f.id);params[f.name]=el?el.value.trim():"";  });
+  const btn=document.getElementById("addBtn");btn.disabled=true;btn.textContent="Saving…";
+  try{
+    const res=await fetch(url+"?"+new URLSearchParams(params));
+    const data=await res.json();if(data.error)throw new Error(data.error);
+    toast("Saved ✓","ok");
+    FIELDS.forEach(f=>{const el=document.getElementById(f.id);if(el&&f.type!=="date")el.value="";});
+    await syncPage();
+  }catch(e){toast("Error: "+e.message,"err");}
+  finally{btn.disabled=false;btn.textContent="+ Add entry";}
+}
+function openDrawer(row){
+  editId=row._id||row.id||row["_rowIndex"];
+  document.getElementById("editId").value=editId;
+  FIELDS.forEach(f=>{const el=document.getElementById(f.eid);if(el)el.value=row[f.name]||"";});
+  document.getElementById("drawer").classList.add("open");
+  document.querySelectorAll("tbody tr").forEach(r=>r.classList.toggle("selected",r.dataset.id==editId));
+}
+async function saveEdit(){
+  const url=localStorage.getItem("gs_url");
+  const id=document.getElementById("editId").value;
+  const params={action:"update",sheet:SHEET_NAME,id};
+  FIELDS.forEach(f=>{const el=document.getElementById(f.eid);params[f.name]=el?el.value.trim():"";  });
+  try{
+    const res=await fetch(url+"?"+new URLSearchParams(params));
+    const data=await res.json();if(data.error)throw new Error(data.error);
+    toast("Updated ✓","ok");closeDrawer();await syncPage();
+  }catch(e){toast("Error: "+e.message,"err");}
+}
+async function deleteRow(){
+  const url=localStorage.getItem("gs_url");
+  const id=document.getElementById("editId").value;
+  if(!confirm("Delete this entry?"))return;
+  try{
+    await fetch(url+"?"+new URLSearchParams({action:"delete",sheet:SHEET_NAME,id}));
+    toast("Deleted","ok");closeDrawer();await syncPage();
+  }catch(e){toast("Error: "+e.message,"err");}
+}
+function renderTable(){
+  const tbody=document.getElementById("tbody");
+  document.getElementById("rowBadge").textContent=rows.length+" entries";
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="20" style="text-align:center;padding:2rem;color:var(--text3)">No entries yet. Add one on the left.</td></tr>';return;}
+  tbody.innerHTML=rows.map((row,i)=>{
+    const id=row._id||row.id||row["_rowIndex"]||i;
+    const cells=COLS.map(c=>"<td title='"+(row[c]||"")+"'>"+(row[c]||"–")+"</td>").join("");
+    const rj=JSON.stringify(row).replace(/"/g,"&quot;");
+    return `<tr data-id="${id}" onclick="openDrawer(${rj})">${cells}</tr>`;
+  }).join("");
+}
+function exportCSV(){
+  if(!rows.length){toast("No data","err");return;}
+  const h=COLS.join(",");
+  const lines=rows.map(r=>COLS.map(c=>'"'+(r[c]||"")+'"').join(","));
+  const a=document.createElement("a");
+  a.href="data:text/csv;charset=utf-8,"+encodeURIComponent([h,...lines].join("\n"));
+  a.download=SHEET_NAME.toLowerCase().replace(/ /g,"_")+".csv";a.click();
+}
+</script></body></html>

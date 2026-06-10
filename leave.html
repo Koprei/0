@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Annual Leave — MyRecord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="_shared.css"/>
+<style>
+.accent-bar{height:3px;background:var(--c-leave);border-radius:99px;margin-bottom:1.25rem}
+</style>
+</head><body>
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="toggleSidebar()"><svg viewBox="0 0 20 20"><path d="M2 5h16M2 10h16M2 15h16"/></svg></button>
+    <a class="brand" href="index.html"><div class="brand-mark"><svg viewBox="0 0 17 17"><rect x="2" y="2" width="6" height="6" rx="1.5"/><rect x="9" y="2" width="6" height="6" rx="1.5"/><rect x="2" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg></div>MyRecord</a>
+  </div>
+  <div class="topbar-right">
+    <button class="sync-pill" onclick="syncPage()"><div class="sdot" id="sdot"></div><span id="slabel">Loading…</span></button>
+  </div>
+</div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner">
+    <div class="nav-section"><span class="nav-label">Overview</span><nav><a href="index.html" data-page="index.html"><span class="nav-icon">🏠</span>Home</a><a href="task.html" data-page="task.html"><span class="nav-icon">✅</span>Task</a></nav></div>
+    <div class="nav-section"><span class="nav-label">Personal</span><nav>
+      <a href="leave.html" data-page="leave.html"><span class="nav-icon">🌴</span>Annual Leave</a>
+      <a href="finance.html" data-page="finance.html"><span class="nav-icon">💰</span>Finance</a>
+      <a href="health.html" data-page="health.html"><span class="nav-icon">❤️</span>Health</a>
+      <a href="family.html" data-page="family.html"><span class="nav-icon">👨‍👩‍👧</span>Family</a>
+    </nav></div>
+    <div class="nav-section"><span class="nav-label">Growth</span><nav>
+      <a href="study.html" data-page="study.html"><span class="nav-icon">📚</span>Study</a>
+      <a href="trip.html" data-page="trip.html"><span class="nav-icon">✈️</span>Trip Plans</a>
+      <a href="plans.html" data-page="plans.html"><span class="nav-icon">🎯</span>Plans</a>
+    </nav></div>
+    <div class="nav-section"><span class="nav-label">Digital</span><nav>
+      <a href="digi.html" data-page="digi.html"><span class="nav-icon">🔐</span>Digi Asset</a>
+      <a href="calendar.html" data-page="calendar.html"><span class="nav-icon">📅</span>Calendar</a>
+      <a href="contact.html" data-page="contact.html"><span class="nav-icon">👤</span>Contact</a>
+    </nav></div>
+  </div>
+  <div class="sidebar-footer"><div class="url-config"><label>Apps Script URL</label><input type="url" id="urlInput" placeholder="https://script.google.com/macros/s/.../exec"/><button class="btn btn-ghost" onclick="saveUrl()">Save & connect</button></div></div>
+</aside>
+
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <div><div class="page-title">🌴 Annual Leave</div><div class="page-subtitle">Track balance, applications, and calendar sync</div></div>
+      <div class="page-actions">
+        <button class="btn btn-ghost" onclick="exportCSV()">↓ CSV</button>
+        <button class="btn btn-ghost" onclick="calSyncAll()">📅 Sync to Calendar</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">Annual balance</div><div class="stat-val">20</div><div class="stat-sub">days total</div></div>
+      <div class="stat-card"><div class="stat-label">Days spent</div><div class="stat-val red" id="sSpent">–</div><div class="stat-sub" id="sSpentSub">–</div><div class="prog"><div class="prog-fill" id="sBar" style="width:0%;background:var(--c-leave)"></div></div></div>
+      <div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-val green" id="sRem">–</div><div class="stat-sub" id="sRemSub">–</div></div>
+      <div class="stat-card"><div class="stat-label">Entries</div><div class="stat-val" id="sCount">–</div><div class="stat-sub">applications</div></div>
+    </div>
+    <div class="two-col">
+      <div class="form-col">
+        <div class="card">
+          <div class="card-header"><h2>Add leave entry</h2></div>
+          <div class="card-body">
+            <div class="field-row">
+              <div class="field"><label>Leave date</label><input type="date" id="fDate"/></div>
+              <div class="field"><label>Days applied</label><input type="number" id="fApplied" min="0.5" step="0.5" placeholder="1"/></div>
+            </div>
+            <div class="field"><label>Reason</label>
+              <select id="fReason"><option value="">Select reason</option><option>Busy at home</option><option>Going to province</option><option>Going to homeland</option><option>Children Graduation</option><option>Medical</option><option>Other</option></select>
+            </div>
+            <div class="field"><label>Remark</label><input type="text" id="fRemark" placeholder="e.g. HCMC Marathon"/></div>
+            <div class="field"><label>Application date</label><input type="date" id="fAppDate"/></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--blue-bg);border-radius:var(--r);margin-bottom:12px">
+              <input type="checkbox" id="fAddCal" checked style="accent-color:var(--blue);width:14px;height:14px"/>
+              <label for="fAddCal" style="font-size:12px;color:var(--blue-text);cursor:pointer">📅 Also add to Google Calendar</label>
+            </div>
+            <button class="btn btn-primary btn-full" id="addBtn" onclick="addEntry()">+ Add entry</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Leave history</h2>
+          <span class="chip chip-gray" id="rowBadge">–</span>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr>
+            <th style="width:36px">#</th>
+            <th style="width:105px">Date taken</th>
+            <th class="r" style="width:58px">Bal</th>
+            <th class="r" style="width:56px">Spent</th>
+            <th class="r" style="width:60px">Applied</th>
+            <th class="r" style="width:74px">Remained</th>
+            <th style="width:140px">Reason</th>
+            <th>Remark</th>
+            <th style="width:96px">App. date</th>
+          </tr></thead>
+          <tbody id="tbody"><tr><td colspan="9" class="empty"><div class="empty-icon">🌴</div><p>No entries yet</p></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="drawer" class="drawer">
+  <div class="drawer-hdr"><h3>Edit leave entry</h3><button class="drawer-close" onclick="closeDrawer()">×</button></div>
+  <div class="drawer-body">
+    <input type="hidden" id="eId"/>
+    <div class="field-row">
+      <div class="field"><label>Leave date</label><input type="date" id="eDate"/></div>
+      <div class="field"><label>Days applied</label><input type="number" id="eApplied" min="0.5" step="0.5"/></div>
+    </div>
+    <div class="field"><label>Reason</label>
+      <select id="eReason"><option value="">Select reason</option><option>Busy at home</option><option>Going to province</option><option>Going to homeland</option><option>Children Graduation</option><option>Medical</option><option>Other</option></select>
+    </div>
+    <div class="field"><label>Remark</label><input type="text" id="eRemark"/></div>
+    <div class="field"><label>Application date</label><input type="date" id="eAppDate"/></div>
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--blue-bg);border-radius:var(--r)">
+      <input type="checkbox" id="eAddCal" style="accent-color:var(--blue);width:14px;height:14px"/>
+      <label for="eAddCal" style="font-size:12px;color:var(--blue-text);cursor:pointer">📅 Update Google Calendar too</label>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn btn-danger" onclick="deleteEntry()">🗑 Delete</button>
+    <button class="btn btn-primary" onclick="saveEdit()">Save changes</button>
+  </div>
+</div>
+<div id="_toast" class="toast"></div>
+<script src="_shared.js"></script>
+<script>
+const BALANCE=20; let entries=[], editId=null;
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function saveUrl(){const v=document.getElementById("urlInput").value.trim();if(!v)return;localStorage.setItem("gs_url",v);toast("Saved","ok");syncPage();}
+function closeDrawer(){document.getElementById("drawer").classList.remove("open");editId=null;document.querySelectorAll("tbody tr").forEach(r=>r.classList.remove("selected"));}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll("nav a[data-page]").forEach(a=>a.classList.toggle("active",a.dataset.page==="leave.html"));
+  const inp=document.getElementById("urlInput");if(inp&&localStorage.getItem("gs_url"))inp.value=localStorage.getItem("gs_url");
+  document.getElementById("fDate").value=today();
+  document.getElementById("fAppDate").value=today();
+  syncPage();
+});
+
+async function syncPage(){
+  const url=localStorage.getItem("gs_url");
+  if(!url){setSyncState("err","No URL");return;}
+  setSyncState("spin","Syncing…");
+  try{
+    const res=await fetch(url+"?action=read&sheet=Annual+Leave");
+    const data=await res.json();
+    if(data.error)throw new Error(data.error);
+    entries=data.entries||[];render();setSyncState("ok","Synced "+new Date().toLocaleTimeString());
+  }catch(e){setSyncState("err","Failed");toast("Error: "+e.message,true);}
+}
+
+async function addEntry(){
+  const date=document.getElementById("fDate").value;
+  const applied=parseFloat(document.getElementById("fApplied").value);
+  const reason=document.getElementById("fReason").value||"Other";
+  const remark=document.getElementById("fRemark").value.trim();
+  const appDate=document.getElementById("fAppDate").value;
+  const addCal=document.getElementById("fAddCal").checked;
+  if(!date){toast("Enter a date","err");return;}
+  if(!applied||applied<=0){toast("Enter days applied","err");return;}
+  const url=localStorage.getItem("gs_url");
+  if(!url){toast("No URL configured","err");return;}
+  const btn=document.getElementById("addBtn");btn.disabled=true;btn.textContent="Saving…";
+  try{
+    const res=await fetch(url+"?"+new URLSearchParams({action:"add",sheet:"Annual Leave",date,applied,reason,remark,appDate}));
+    const data=await res.json();if(data.error)throw new Error(data.error);
+    toast("Entry saved ✓","ok");
+    document.getElementById("fApplied").value="";
+    document.getElementById("fRemark").value="";
+    document.getElementById("fReason").value="";
+    await syncPage();
+    if(addCal)addToCalendar({date,applied,reason,remark});
+  }catch(e){toast("Save failed: "+e.message,"err");}
+  finally{btn.disabled=false;btn.textContent="+ Add entry";}
+}
+
+function openDrawer(e){
+  editId=e.id;
+  document.getElementById("eId").value=e.id;
+  document.getElementById("eDate").value=e.date||"";
+  document.getElementById("eApplied").value=e.applied||"";
+  document.getElementById("eReason").value=e.reason||"";
+  document.getElementById("eRemark").value=e.remark||"";
+  document.getElementById("eAppDate").value=e.appDate||"";
+  document.getElementById("eAddCal").checked=false;
+  document.getElementById("drawer").classList.add("open");
+  document.querySelectorAll("tbody tr").forEach(r=>r.classList.toggle("selected",r.dataset.id==e.id));
+}
+
+async function saveEdit(){
+  const id=document.getElementById("eId").value;
+  const date=document.getElementById("eDate").value;
+  const applied=parseFloat(document.getElementById("eApplied").value);
+  const reason=document.getElementById("eReason").value||"Other";
+  const remark=document.getElementById("eRemark").value.trim();
+  const appDate=document.getElementById("eAppDate").value;
+  const addCal=document.getElementById("eAddCal").checked;
+  if(!date||!applied||applied<=0){toast("Fill date and days","err");return;}
+  const url=localStorage.getItem("gs_url");
+  try{
+    await fetch(url+"?"+new URLSearchParams({action:"delete",sheet:"Annual Leave",id}));
+    await fetch(url+"?"+new URLSearchParams({action:"add",sheet:"Annual Leave",date,applied,reason,remark,appDate}));
+    toast("Updated ✓","ok");closeDrawer();await syncPage();
+    if(addCal)addToCalendar({date,applied,reason,remark});
+  }catch(e){toast("Update failed: "+e.message,"err");}
+}
+
+async function deleteEntry(){
+  const id=document.getElementById("eId").value;
+  if(!confirm("Delete entry #"+id+"?"))return;
+  const url=localStorage.getItem("gs_url");
+  try{
+    await fetch(url+"?"+new URLSearchParams({action:"delete",sheet:"Annual Leave",id}));
+    toast("Deleted","ok");closeDrawer();await syncPage();
+  }catch(e){toast("Error: "+e.message,"err");}
+}
+
+function render(){
+  const tbody=document.getElementById("tbody");
+  const dataRows=entries.filter(e=>!e.isBF&&e.id!==0);
+  document.getElementById("rowBadge").textContent=dataRows.length+" entries";
+  if(!entries.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text3)">No entries</td></tr>';updateStats(0,BALANCE,0);return;}
+  tbody.innerHTML=entries.map(e=>{
+    if(e.isBF||e.id===0)return`<tr style="background:#FAFAF8"><td class="v-dim mono">0</td><td class="v-dim" style="font-style:italic;font-size:12px">Balance BF.</td><td class="r v-red mono">${BALANCE}</td><td class="r mono">0</td><td class="r mono">0</td><td class="r v-green mono">${BALANCE}</td><td>–</td><td><strong>New Year</strong></td><td class="v-dim" style="font-size:11px">BF.</td></tr>`;
+    const rem=parseFloat(e.remained);
+    const rc=rem<=3?"v-red":rem<=7?"v-amber":"v-green";
+    const ej=JSON.stringify(e).replace(/"/g,"&quot;");
+    return`<tr data-id="${e.id}" onclick="openDrawer(${ej})"><td class="v-dim mono">${e.id}</td><td class="mono">${fmtDate(e.date)}</td><td class="r v-red mono">${BALANCE}</td><td class="r mono">${parseFloat(e.spent).toFixed(1)}</td><td class="r mono">${parseFloat(e.applied).toFixed(1)}</td><td class="r ${rc} mono">${rem.toFixed(1)}</td><td>${chip(e.reason)}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis" title="${e.remark||""}">${e.remark||"–"}</td><td class="v-dim mono" style="font-size:11px">${fmtDate(e.appDate)}</td></tr>`;
+  }).join("");
+  const last=dataRows[dataRows.length-1];
+  updateStats(last?parseFloat(last.spent):0,last?parseFloat(last.remained):BALANCE,dataRows.length);
+}
+
+function updateStats(spent,rem,count){
+  const pct=Math.round(spent/BALANCE*100);
+  document.getElementById("sSpent").textContent=spent.toFixed(1);
+  document.getElementById("sSpentSub").textContent=pct+"% used";
+  document.getElementById("sRem").textContent=rem.toFixed(1);
+  document.getElementById("sRemSub").textContent=rem<=3?"⚠ Running low":rem<=7?"Use carefully":"Available";
+  document.getElementById("sCount").textContent=count;
+  document.getElementById("sBar").style.width=pct+"%";
+  document.getElementById("sRem").className="stat-val"+(rem<=3?" red":rem<=7?" amber":" green");
+}
+
+function chip(r){
+  const map={"Busy at home":"chip-blue","Going to province":"chip-amber","Going to homeland":"chip-green","Children Graduation":"chip-green","Medical":"chip-red","Other":"chip-purple"};
+  if(!r||r==="–")return`<span class="v-dim">–</span>`;
+  return`<span class="chip ${map[r]||"chip-blue"}">${r}</span>`;
+}
+
+function addToCalendar(e){
+  const title="Leave - "+(e.reason||"Day off")+(e.remark?" ("+e.remark+")":"");
+  const d=(e.date||"").replace(/-/g,"");
+  const end=new Date(e.date);end.setDate(end.getDate()+Math.ceil(parseFloat(e.applied||1)));
+  const endStr=end.toISOString().slice(0,10).replace(/-/g,"");
+  window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${d}/${endStr}&details=${encodeURIComponent("Leave: "+(e.reason||"")+" | "+( e.remark||""))}&trp=false`,"_blank");
+}
+
+function calSyncAll(){
+  const rows=entries.filter(e=>!e.isBF&&e.id!==0);
+  if(!rows.length){toast("No entries","err");return;}
+  rows.forEach((e,i)=>setTimeout(()=>addToCalendar(e),i*500));
+  toast("Opening "+rows.length+" calendar events…","ok");
+}
+
+function exportCSV(){
+  const h="App No.,Leave Taken Date,Balance,Spent,Applied,Remained,Reason,Remark,Application Date";
+  const lines=entries.map(e=>[e.id,e.isBF?"Balance BF.":fmtDate(e.date),BALANCE,e.isBF?0:parseFloat(e.spent).toFixed(1),parseFloat(e.applied).toFixed(1),e.isBF?BALANCE:parseFloat(e.remained).toFixed(1),e.reason,'"'+(e.remark||"")+'"',e.isBF?"BF.":fmtDate(e.appDate)].join(","));
+  const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent([h,...lines].join("\n"));a.download="leave.csv";a.click();
+}
+</script>
+</body></html>
