@@ -360,7 +360,7 @@ body{
   <!-- Hero card -->
   <div class="hero">
     <div class="hero-greeting" id="heroGreeting">Good morning</div>
-    <div class="hero-name">Pholline 👋</div>
+    <div class="hero-name">Polin 👋</div>
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-label">Leave Left</div>
@@ -717,7 +717,7 @@ async function gsFetch(params) {
 async function loadLeaveStats() {
   try {
     const data = await gsFetch({ action:"read", sheet:"Annual Leave" });
-    leaveEntries = data.entries || [];
+    leaveEntries = (data.entries || []).map(normalizeLeaveEntry);
     updateLeaveHero();
   } catch(e) {}
 }
@@ -726,7 +726,7 @@ async function loadLeave() {
   document.getElementById("leaveList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>';
   try {
     const data = await gsFetch({ action:"read", sheet:"Annual Leave" });
-    leaveEntries = data.entries || [];
+    leaveEntries = (data.entries || []).map(normalizeLeaveEntry);
     renderLeave();
     updateLeaveHero();
   } catch(e) {
@@ -744,18 +744,40 @@ function updateLeaveHero() {
   document.getElementById("heroUsed").textContent  = spent.toFixed(1)+" d";
 }
 
-// ── Column resolvers: handles both short ("spent") and full ("Leave Spent") header names ──
-function lv(e,...keys){ for(const k of keys){const v=e[k];if(v!==undefined&&v!=="")return parseFloat(v);}return NaN; }
-function ls(e,...keys){ for(const k of keys){if(e[k]!==undefined&&e[k]!=="")return String(e[k]);}return ""; }
-const lSpent    = e => lv(e,"spent","Leave Spent","Spent");
-const lRemained = e => lv(e,"remained","Leave Remained","Remained");
-const lApplied  = e => lv(e,"applied","Leave Applied","Applied","Days Applied");
-const lDate     = e => ls(e,"date","Leave Taken Date","Date");
-const lReason   = e => ls(e,"reason","Leave Reason","Reason");
-const lRemark   = e => ls(e,"remark","Leave Personal Remark","Remark");
-const lAppDate  = e => ls(e,"appDate","Leave Application Date","Application Date");
-const lId       = e => ls(e,"id","App No.","App No","_rowIndex");
-const lIsBF     = e => e.isBF===true || lId(e)==="0" || lDate(e)==="";
+// Normalize raw Apps Script leave row into fixed short keys.
+// addLeaveRow() always writes columns in this fixed order (regardless of header names):
+//   col0=AppNo, col1=date, col2=balance, col3=spent, col4=applied,
+//   col5=remained, col6=reason, col7=remark, col8=appDate
+function normalizeLeaveEntry(raw) {
+  const META = new Set(["_rowIndex","id","isBF"]);
+  const vals = Object.entries(raw)
+    .filter(([k]) => !META.has(k))
+    .map(([, v]) => (v === undefined || v === null) ? "" : String(v));
+  const id = String(raw.id !== undefined && raw.id !== "" ? raw.id : (vals[0] || ""));
+  return {
+    id      : id,
+    isBF    : id === "0" || vals[1] === "",
+    date    : vals[1]  || "",
+    balance : vals[2]  || "",
+    spent   : vals[3]  || "",
+    applied : vals[4]  || "",
+    remained: vals[5]  || "",
+    reason  : vals[6]  || "",
+    remark  : vals[7]  || "",
+    appDate : vals[8]  || "",
+    _rowIndex: raw._rowIndex,
+  };
+}
+
+const lSpent    = e => parseFloat(e.spent);
+const lRemained = e => parseFloat(e.remained);
+const lApplied  = e => parseFloat(e.applied);
+const lDate     = e => e.date    || "";
+const lReason   = e => e.reason  || "";
+const lRemark   = e => e.remark  || "";
+const lAppDate  = e => e.appDate || "";
+const lId       = e => e.id      || String(e._rowIndex || "");
+const lIsBF     = e => e.isBF === true;
 
 function renderLeave() {
   const rows = leaveEntries.filter(e => !lIsBF(e));
@@ -779,8 +801,8 @@ function renderLeave() {
     const r2  = lRemained(e);
     const ap  = lApplied(e);
     const cls = isNaN(r2)||r2<=3?"r":r2<=7?"":"g";
-    const ej  = JSON.stringify(e).replace(/"/g,"&quot;");
-    return `<div class="entry-card" onclick="openLeaveEdit(${ej})">
+    const idx = leaveEntries.indexOf(e);
+    return `<div class="entry-card" onclick="openLeaveEdit(${idx})">
       <div class="entry-icon" style="background:rgba(0,184,148,.2)">🌴</div>
       <div class="entry-info">
         <div class="entry-title">${lReason(e)||"Leave"}${lRemark(e)?" · "+lRemark(e):""}</div>
@@ -819,7 +841,9 @@ async function addLeave() {
   finally { btn.disabled=false; btn.textContent="+ Add Entry"; }
 }
 
-function openLeaveEdit(e) {
+function openLeaveEdit(idx) {
+  const e = leaveEntries[idx];
+  if (!e) return;
   editData = e; editSheet = "Annual Leave";
   const id = lId(e);
   document.getElementById("sheetTitle").textContent = "Edit Leave Entry";
