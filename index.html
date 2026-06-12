@@ -41,46 +41,17 @@ body{
   max-width:430px;margin:0 auto;
   position:relative;
 }
-
-/* ── Screens ── */
-.screen{
-  display:none;flex-direction:column;
-  height:calc(100vh - var(--nav-h));
-  overflow-y:auto;overflow-x:hidden;
-  padding-bottom:1rem;
-  -webkit-overflow-scrolling:touch;
-}
+.screen{display:none;flex-direction:column;height:calc(100vh - var(--nav-h));overflow-y:auto;overflow-x:hidden;padding-bottom:1rem;-webkit-overflow-scrolling:touch;}
 .screen.active{display:flex}
-/* hide scrollbar */
 .screen::-webkit-scrollbar{display:none}
 .screen{-ms-overflow-style:none;scrollbar-width:none}
-
-/* ── Top status bar ── */
-.statusbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 20px 0;flex-shrink:0;
-}
+.statusbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 0;flex-shrink:0;}
 .statusbar-time{font-size:13px;font-weight:600;color:var(--text2)}
 .statusbar-icons{display:flex;gap:6px;align-items:center}
 .statusbar-icons svg{width:16px;height:16px;fill:var(--text2)}
-
-/* ── Hero card ── */
-.hero{
-  margin:12px 16px;
-  background:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 50%,#fd79a8 100%);
-  border-radius:20px;padding:20px;position:relative;overflow:hidden;
-  flex-shrink:0;
-}
-.hero::before{
-  content:'';position:absolute;top:-40px;right:-40px;
-  width:140px;height:140px;background:rgba(255,255,255,0.08);
-  border-radius:50%;
-}
-.hero::after{
-  content:'';position:absolute;bottom:-30px;right:30px;
-  width:90px;height:90px;background:rgba(255,255,255,0.06);
-  border-radius:50%;
-}
+.hero{margin:12px 16px;background:linear-gradient(135deg,#6C5CE7 0%,#a29bfe 50%,#fd79a8 100%);border-radius:20px;padding:20px;position:relative;overflow:hidden;flex-shrink:0;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:rgba(255,255,255,0.08);border-radius:50%;}
+.hero::after{content:'';position:absolute;bottom:-30px;right:30px;width:90px;height:90px;background:rgba(255,255,255,0.06);border-radius:50%;}
 .hero-greeting{font-size:12px;font-weight:500;opacity:.8;margin-bottom:2px}
 .hero-name{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
 .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
@@ -89,189 +60,54 @@ body{
 .hero-stat-val{font-size:18px;font-weight:700;letter-spacing:-.01em}
 .hero-stat-val.green{color:#00ffcc}
 .hero-stat-val.red{color:#ffb3b3}
-
-/* ── Section label ── */
-.section-label{
-  font-size:11px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--text3);
-  padding:0 20px;margin:16px 0 10px;flex-shrink:0;
-}
-
-/* ── 4×4 icon grid ── */
-.icon-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:10px;padding:0 16px;flex-shrink:0;
-}
-.grid-btn{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:14px 8px 12px;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  cursor:pointer;transition:transform .15s,background .15s;
-  text-decoration:none;color:var(--text);
-  -webkit-tap-highlight-color:transparent;
-  position:relative;overflow:hidden;
-}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:0 20px;margin:16px 0 10px;flex-shrink:0;}
+.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;flex-shrink:0;}
+.grid-btn{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .15s,background .15s;text-decoration:none;color:var(--text);-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;}
 .grid-btn:active{transform:scale(.94);background:var(--card2)}
-.grid-btn .btn-icon{
-  width:42px;height:42px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;flex-shrink:0;
-}
+.grid-btn .btn-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .grid-btn .btn-label{font-size:11px;font-weight:600;text-align:center;line-height:1.2;color:var(--text2)}
-.grid-btn .btn-badge{
-  position:absolute;top:8px;right:8px;
-  background:var(--red);color:#fff;
-  font-size:9px;font-weight:700;
-  width:16px;height:16px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-}
-
-/* Icon background colors */
-.ic-task{background:rgba(108,92,231,.25)}
-.ic-leave{background:rgba(0,184,148,.25)}
-.ic-finance{background:rgba(253,203,110,.25)}
-.ic-health{background:rgba(255,118,117,.25)}
-.ic-family{background:rgba(253,121,168,.25)}
-.ic-study{background:rgba(116,185,255,.25)}
-.ic-trip{background:rgba(225,112,85,.25)}
-.ic-plans{background:rgba(162,155,254,.25)}
-.ic-digi{background:rgba(0,206,201,.25)}
-.ic-cal{background:rgba(253,203,110,.25)}
-.ic-contact{background:rgba(162,155,254,.25)}
-.ic-more{background:rgba(255,255,255,.1)}
-
-/* ── Quick stats row ── */
-.quick-row{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:10px;padding:0 16px;flex-shrink:0;
-}
-.quick-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:14px;position:relative;overflow:hidden;
-}
-.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.quick-card.leave::before{background:linear-gradient(90deg,var(--green),var(--teal))}
-.quick-card.task::before{background:linear-gradient(90deg,var(--accent),var(--purple))}
-.quick-card-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:6px}
-.quick-card-val{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
-.quick-card-val.green{color:var(--green)}
-.quick-card-val.red{color:var(--red)}
-.quick-card-val.blue{color:var(--blue)}
-.quick-card-sub{font-size:11px;color:var(--text3)}
-.prog-mini{height:3px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:8px}
-.prog-mini-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width .5s}
-
-/* ── Bottom nav ── */
-.bottom-nav{
-  height:var(--nav-h);background:var(--surface);
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-around;
-  flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);
-}
-.nav-tab{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  cursor:pointer;padding:8px 16px;border-radius:12px;
-  transition:background .15s;color:var(--text3);
-  background:none;border:none;font-family:inherit;
-  -webkit-tap-highlight-color:transparent;
-}
-.nav-tab.active{color:var(--accent2)}
-.nav-tab:active{background:rgba(255,255,255,.05)}
+.ic-task{background:rgba(108,92,231,.25)}.ic-leave{background:rgba(0,184,148,.25)}.ic-finance{background:rgba(253,203,110,.25)}.ic-health{background:rgba(255,118,117,.25)}.ic-family{background:rgba(253,121,168,.25)}.ic-study{background:rgba(116,185,255,.25)}.ic-trip{background:rgba(225,112,85,.25)}.ic-plans{background:rgba(162,155,254,.25)}.ic-digi{background:rgba(0,206,201,.25)}.ic-cal{background:rgba(253,203,110,.25)}.ic-contact{background:rgba(162,155,254,.25)}.ic-more{background:rgba(255,255,255,.1)}
+.bottom-nav{height:var(--nav-h);background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);}
+.nav-tab{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 16px;border-radius:12px;transition:background .15s;color:var(--text3);background:none;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent;}
+.nav-tab.active{color:var(--accent2)}.nav-tab:active{background:rgba(255,255,255,.05)}
 .nav-tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.nav-tab span{font-size:10px;font-weight:600}
-.nav-tab.active svg{stroke:var(--accent2)}
-
-/* ── Detail screens (Leave, etc) ── */
-.screen-header{
-  display:flex;align-items:center;gap:12px;
-  padding:16px 20px 12px;flex-shrink:0;
-}
-.back-btn{
-  width:36px;height:36px;background:var(--card);
-  border-radius:10px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;border:1px solid var(--border);flex-shrink:0;
-}
+.nav-tab span{font-size:10px;font-weight:600}.nav-tab.active svg{stroke:var(--accent2)}
+.screen-header{display:flex;align-items:center;gap:12px;padding:16px 20px 12px;flex-shrink:0;}
+.back-btn{width:36px;height:36px;background:var(--card);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border);flex-shrink:0;}
 .back-btn svg{width:18px;height:18px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .screen-title{font-size:18px;font-weight:700;letter-spacing:-.01em}
-
-/* Stats row */
-.stats-strip{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:8px;padding:0 16px;margin-bottom:12px;flex-shrink:0;
-}
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px;margin-bottom:12px;flex-shrink:0;}
 .stat-pill{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 10px;text-align:center}
 .stat-pill-val{font-size:18px;font-weight:800;letter-spacing:-.01em}
 .stat-pill-val.g{color:var(--green)}.stat-pill-val.r{color:var(--red)}.stat-pill-val.b{color:var(--blue)}
 .stat-pill-label{font-size:10px;color:var(--text3);margin-top:2px;font-weight:500}
-
-/* Form card */
-.form-card{
-  margin:0 16px 12px;background:var(--card);
-  border:1px solid var(--border);border-radius:16px;overflow:hidden;flex-shrink:0;
-}
-.form-card-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px;border-bottom:1px solid var(--border);
-}
+.form-card{margin:0 16px 12px;background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;flex-shrink:0;}
+.form-card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
 .form-card-header h3{font-size:13px;font-weight:700}
-.form-card-toggle{
-  font-size:11px;font-weight:600;color:var(--accent2);
-  background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;
-}
+.form-card-toggle{font-size:11px;font-weight:600;color:var(--accent2);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;}
 .form-card-body{padding:14px 16px}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.f-field{margin-bottom:10px}
-.f-field:last-child{margin-bottom:0}
+.f-field{margin-bottom:10px}.f-field:last-child{margin-bottom:0}
 .f-field label{display:block;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-.f-field input,.f-field select,.f-field textarea{
-  width:100%;padding:10px 12px;
-  background:var(--card2);border:1px solid var(--border);
-  border-radius:10px;color:var(--text);font-size:13px;font-family:inherit;
-  appearance:none;transition:border-color .15s;
-}
+.f-field input,.f-field select,.f-field textarea{width:100%;padding:10px 12px;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:inherit;appearance:none;transition:border-color .15s;}
 .f-field input:focus,.f-field select:focus{outline:none;border-color:var(--accent2)}
 .f-field select option{background:var(--card2)}
-.add-btn{
-  width:100%;padding:13px;margin-top:4px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;font-size:14px;font-weight:700;
-  border:none;border-radius:12px;cursor:pointer;
-  font-family:inherit;transition:opacity .15s;
-}
-.add-btn:active{opacity:.85}
-.add-btn:disabled{opacity:.4;cursor:not-allowed}
-
-/* Entry list */
+.add-btn{width:100%;padding:13px;margin-top:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:14px;font-weight:700;border:none;border-radius:12px;cursor:pointer;font-family:inherit;transition:opacity .15s;}
+.add-btn:active{opacity:.85}.add-btn:disabled{opacity:.4;cursor:not-allowed}
 .entry-list{padding:0 16px;flex:1}
-.entry-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:14px;margin-bottom:8px;
-  cursor:pointer;transition:background .12s;
-  display:flex;align-items:center;gap:12px;
-}
+.entry-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;transition:background .12s;display:flex;align-items:center;gap:12px;}
 .entry-card:active{background:var(--card2)}
-.entry-icon{
-  width:40px;height:40px;border-radius:11px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;background:rgba(108,92,231,.2);
-}
+.entry-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:rgba(108,92,231,.2);}
 .entry-info{flex:1;min-width:0}
-.entry-title{font-size:13px;font-weight:600;margin-bottom:2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry-title{font-size:13px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .entry-sub{font-size:11px;color:var(--text3)}
 .entry-right{text-align:right;flex-shrink:0}
 .entry-val{font-size:14px;font-weight:700}
 .entry-val.g{color:var(--green)}.entry-val.r{color:var(--red)}
 .entry-date{font-size:10px;color:var(--text3);margin-top:2px}
-
-/* Edit sheet (bottom drawer) */
 .sheet-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end}
 .sheet-bg.open{display:flex}
-.sheet{
-  background:var(--surface);border-radius:24px 24px 0 0;
-  padding:0 0 env(safe-area-inset-bottom);
-  width:100%;max-height:85vh;overflow-y:auto;
-}
+.sheet{background:var(--surface);border-radius:24px 24px 0 0;padding:0 0 env(safe-area-inset-bottom);width:100%;max-height:85vh;overflow-y:auto;}
 .sheet-handle{width:36px;height:4px;background:var(--border);border-radius:99px;margin:12px auto 0}
 .sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px}
 .sheet-hdr h3{font-size:16px;font-weight:700}
@@ -281,54 +117,24 @@ body{
 .sheet-foot .btn{flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:none}
 .btn-del{background:rgba(255,118,117,.15);color:var(--red)}
 .btn-save{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
-
-/* Toast */
 .toast-wrap{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none}
-.toast{
-  background:rgba(30,30,60,.95);color:#fff;
-  font-size:13px;font-weight:500;
-  padding:10px 18px;border-radius:99px;
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(20px);
-  opacity:0;transform:translateY(-8px);
-  transition:all .22s;white-space:nowrap;
-}
-.toast.show{opacity:1;transform:translateY(0)}
-.toast.ok{border-color:var(--green);color:var(--green)}
-.toast.err{border-color:var(--red);color:var(--red)}
-
-/* Progress bar */
+.toast{background:rgba(30,30,60,.95);color:#fff;font-size:13px;font-weight:500;padding:10px 18px;border-radius:99px;border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(20px);opacity:0;transform:translateY(-8px);transition:all .22s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateY(0)}.toast.ok{border-color:var(--green);color:var(--green)}.toast.err{border-color:var(--red);color:var(--red)}
 .prog-bar{height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin:0 16px 16px;flex-shrink:0}
 .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));border-radius:99px;transition:width .5s}
-
-/* Cal checkbox row */
 .cal-check{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(116,185,255,.1);border-radius:10px;margin-bottom:10px}
 .cal-check label{font-size:12px;color:var(--blue);cursor:pointer;font-weight:500}
 .cal-check input{accent-color:var(--blue);width:14px;height:14px}
-
-/* Splash / loading */
-.splash{
-  position:fixed;inset:0;background:var(--bg);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:999;transition:opacity .4s;
-}
+.splash{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity .4s;}
 .splash.hide{opacity:0;pointer-events:none}
-.splash-logo{
-  width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border-radius:20px;display:flex;align-items:center;justify-content:center;
-  font-size:32px;margin-bottom:16px;
-  animation:pulse2 1.5s ease-in-out infinite;
-}
+.splash-logo{width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:16px;animation:pulse2 1.5s ease-in-out infinite;}
 @keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .splash-name{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
 .splash-sub{font-size:13px;color:var(--text3)}
 .loader{width:40px;height:3px;background:var(--card);border-radius:99px;margin-top:32px;overflow:hidden}
 .loader-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;animation:load 1.5s ease-in-out infinite}
 @keyframes load{0%{width:0%;margin-left:0}50%{width:60%}100%{width:0%;margin-left:100%}}
-
-/* Utility */
 .hidden{display:none!important}
-.divider{height:1px;background:var(--border);margin:4px 0}
 </style>
 </head>
 <body>
@@ -348,7 +154,6 @@ body{
      SCREEN: HOME
 ════════════════════════════════ -->
 <div class="screen active" id="screen-home">
-  <!-- Status bar -->
   <div class="statusbar">
     <span class="statusbar-time" id="clockTime">--:--</span>
     <div class="statusbar-icons">
@@ -356,11 +161,9 @@ body{
       <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
     </div>
   </div>
-
-  <!-- Hero card -->
   <div class="hero">
     <div class="hero-greeting" id="heroGreeting">Good morning</div>
-    <div class="hero-name">Koprei 👋</div>
+    <div class="hero-name">Pholline 👋</div>
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-label">Leave Left</div>
@@ -372,59 +175,43 @@ body{
       </div>
     </div>
   </div>
-
-  <!-- Section label -->
   <div class="section-label">My Sections</div>
-
-  <!-- 4×4 grid -->
   <div class="icon-grid">
     <div class="grid-btn" onclick="openScreen('leave')">
-      <div class="btn-icon ic-leave">🌴</div>
-      <span class="btn-label">Annual Leave</span>
+      <div class="btn-icon ic-leave">🌴</div><span class="btn-label">Annual Leave</span>
     </div>
     <div class="grid-btn" onclick="openScreen('task')">
-      <div class="btn-icon ic-task">✅</div>
-      <span class="btn-label">Task</span>
+      <div class="btn-icon ic-task">✅</div><span class="btn-label">Task</span>
     </div>
     <div class="grid-btn" onclick="openScreen('finance')">
-      <div class="btn-icon ic-finance">💰</div>
-      <span class="btn-label">Finance</span>
+      <div class="btn-icon ic-finance">💰</div><span class="btn-label">Finance</span>
     </div>
     <div class="grid-btn" onclick="openScreen('health')">
-      <div class="btn-icon ic-health">❤️</div>
-      <span class="btn-label">Health</span>
+      <div class="btn-icon ic-health">❤️</div><span class="btn-label">Health</span>
     </div>
     <div class="grid-btn" onclick="openScreen('family')">
-      <div class="btn-icon ic-family">👨‍👩‍👧</div>
-      <span class="btn-label">Family</span>
+      <div class="btn-icon ic-family">👨‍👩‍👧</div><span class="btn-label">Family</span>
     </div>
     <div class="grid-btn" onclick="openScreen('study')">
-      <div class="btn-icon ic-study">📚</div>
-      <span class="btn-label">Study</span>
+      <div class="btn-icon ic-study">📚</div><span class="btn-label">Study</span>
     </div>
     <div class="grid-btn" onclick="openScreen('trip')">
-      <div class="btn-icon ic-trip">✈️</div>
-      <span class="btn-label">Trip Plans</span>
+      <div class="btn-icon ic-trip">✈️</div><span class="btn-label">Trip Plans</span>
     </div>
     <div class="grid-btn" onclick="openScreen('plans')">
-      <div class="btn-icon ic-plans">🎯</div>
-      <span class="btn-label">Plans</span>
+      <div class="btn-icon ic-plans">🎯</div><span class="btn-label">Plans</span>
     </div>
     <div class="grid-btn" onclick="openScreen('digi')">
-      <div class="btn-icon ic-digi">🔐</div>
-      <span class="btn-label">Digi Asset</span>
+      <div class="btn-icon ic-digi">🔐</div><span class="btn-label">Digi Asset</span>
     </div>
     <div class="grid-btn" onclick="openScreen('calendar')">
-      <div class="btn-icon ic-cal">📅</div>
-      <span class="btn-label">Calendar</span>
+      <div class="btn-icon ic-cal">📅</div><span class="btn-label">Calendar</span>
     </div>
     <div class="grid-btn" onclick="openScreen('contact')">
-      <div class="btn-icon ic-contact">👤</div>
-      <span class="btn-label">Contact</span>
+      <div class="btn-icon ic-contact">👤</div><span class="btn-label">Contact</span>
     </div>
     <div class="grid-btn" onclick="goSettings()">
-      <div class="btn-icon ic-more">⚙️</div>
-      <span class="btn-label">Settings</span>
+      <div class="btn-icon ic-more">⚙️</div><span class="btn-label">Settings</span>
     </div>
   </div>
 </div>
@@ -439,8 +226,6 @@ body{
     </div>
     <div class="screen-title">🌴 Annual Leave</div>
   </div>
-
-  <!-- Stats strip -->
   <div class="stats-strip">
     <div class="stat-pill">
       <div class="stat-pill-val b">20</div>
@@ -455,11 +240,7 @@ body{
       <div class="stat-pill-label">Remaining</div>
     </div>
   </div>
-
-  <!-- Progress -->
   <div class="prog-bar"><div class="prog-bar-fill" id="lProgBar" style="width:0%"></div></div>
-
-  <!-- Add form -->
   <div class="form-card">
     <div class="form-card-header">
       <h3>Add leave entry</h3>
@@ -473,9 +254,12 @@ body{
       <div class="f-field"><label>Reason</label>
         <select id="lReason">
           <option value="">Select…</option>
-          <option>Busy at home</option><option>Going to province</option>
-          <option>Going to homeland</option><option>Children Graduation</option>
-          <option>Medical</option><option>Other</option>
+          <option>Busy at home</option>
+          <option>Going to province</option>
+          <option>Going to homeland</option>
+          <option>Children Graduation</option>
+          <option>Medical</option>
+          <option>Other</option>
         </select>
       </div>
       <div class="f-field"><label>Remark</label><input type="text" id="lRemark" placeholder="e.g. HCMC Marathon"/></div>
@@ -487,16 +271,17 @@ body{
       <button class="add-btn" id="lAddBtn" onclick="addLeave()">+ Add Entry</button>
     </div>
   </div>
-
-  <!-- History -->
-  <div class="section-label" style="margin-top:4px">History <span id="lCount" style="color:var(--accent2);font-size:10px"></span></div>
+  <div class="section-label" style="margin-top:4px">
+    History <span id="lCount" style="color:var(--accent2);font-size:10px"></span>
+  </div>
   <div class="entry-list" id="leaveList">
     <div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>
   </div>
 </div>
 
 <!-- ════════════════════════════════
-     SCREEN: GENERIC (Task/Finance/Health/etc)
+     SCREEN: GENERIC  (Task / Finance / Health / Family /
+                        Study / Trip / Plans / Digi / Calendar / Contact)
 ════════════════════════════════ -->
 <div class="screen" id="screen-generic">
   <div class="screen-header">
@@ -515,7 +300,9 @@ body{
       <button class="add-btn" id="gAddBtn" onclick="addGeneric()">+ Add Entry</button>
     </div>
   </div>
-  <div class="section-label" style="margin-top:4px">Records <span id="gCount" style="color:var(--accent2);font-size:10px"></span></div>
+  <div class="section-label" style="margin-top:4px">
+    Records <span id="gCount" style="color:var(--accent2);font-size:10px"></span>
+  </div>
   <div class="entry-list" id="genericList">
     <div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>
   </div>
@@ -574,7 +361,7 @@ body{
   </button>
 </div>
 
-<!-- Edit bottom sheet -->
+<!-- Edit bottom sheet (shared by all screens) -->
 <div class="sheet-bg" id="editSheet" onclick="closeSheet(event)">
   <div class="sheet" id="sheetInner">
     <div class="sheet-handle"></div>
@@ -590,528 +377,17 @@ body{
   </div>
 </div>
 
-<script>
-// ══════════════════════════════════════════
-//  CONFIG
-// ══════════════════════════════════════════
-const GS_URL = "https://script.google.com/macros/s/AKfycbz9TURWIT_vdjoPqCDdmC503sblckjXSoM-Bu2nPRS1URTCBGHLYV81Rga0Fmkxn5qH3A/exec";
-const BALANCE = 20;
+<!-- ═══════════════════════════════════════════
+     SCRIPTS — load order matters:
+       1. _app.js      shared state + navigation
+       2. _leave.js    Annual Leave screen
+       3. _generic.js  all other 10 sections
+       4. _settings.js settings screen
+     ═══════════════════════════════════════════ -->
+<script src="_app.js"></script>
+<script src="_leave.js"></script>
+<script src="_generic.js"></script>
+<script src="_settings.js"></script>
 
-// Page configs
-const PAGE_CONFIG = {
-  task:     { icon:"✅", sheet:"Task",      label:"Task",      cols:["Title","Priority","Status","Due Date","Notes"],
-              fields:[{t:"text",n:"Title"},{t:"select",n:"Priority",o:["High","Medium","Low"]},{t:"select",n:"Status",o:["Open","In Progress","Done","Cancelled"]},{t:"date",n:"Due Date"},{t:"text",n:"Notes"}]},
-  finance:  { icon:"💰", sheet:"Finance",   label:"Finance",   cols:["Date","Category","Description","Amount","Type","Notes"],
-              fields:[{t:"date",n:"Date"},{t:"select",n:"Category",o:["Income","Food","Transport","Utilities","Health","Entertainment","Other"]},{t:"text",n:"Description"},{t:"number",n:"Amount"},{t:"select",n:"Type",o:["Income","Expense"]},{t:"text",n:"Notes"}]},
-  health:   { icon:"❤️", sheet:"Health",    label:"Health",    cols:["Date","Type","Value","Unit","Notes"],
-              fields:[{t:"date",n:"Date"},{t:"select",n:"Type",o:["Weight","Blood Pressure","Heart Rate","Steps","Sleep","Medication","Doctor Visit","Other"]},{t:"text",n:"Value"},{t:"text",n:"Unit"},{t:"text",n:"Notes"}]},
-  family:   { icon:"👨‍👩‍👧", sheet:"Family",   label:"Family",   cols:["Date","Member","Event","Description","Notes"],
-              fields:[{t:"date",n:"Date"},{t:"text",n:"Member"},{t:"select",n:"Event",o:["Birthday","Anniversary","Medical","School","Travel","Gathering","Other"]},{t:"text",n:"Description"},{t:"text",n:"Notes"}]},
-  study:    { icon:"📚", sheet:"Study",     label:"Study",     cols:["Date","Course","Topic","Progress","Source","Notes"],
-              fields:[{t:"date",n:"Date"},{t:"text",n:"Course"},{t:"text",n:"Topic"},{t:"select",n:"Progress",o:["Not Started","In Progress","Completed"]},{t:"text",n:"Source"},{t:"text",n:"Notes"}]},
-  trip:     { icon:"✈️", sheet:"Trip Plans",label:"Trip Plans",cols:["Destination","Start Date","End Date","Status","Budget","Notes"],
-              fields:[{t:"text",n:"Destination"},{t:"date",n:"Start Date"},{t:"date",n:"End Date"},{t:"select",n:"Status",o:["Planning","Confirmed","Completed","Cancelled"]},{t:"number",n:"Budget"},{t:"text",n:"Notes"}]},
-  plans:    { icon:"🎯", sheet:"Plans",     label:"Plans",     cols:["Title","Category","Target Date","Status","Priority","Notes"],
-              fields:[{t:"text",n:"Title"},{t:"select",n:"Category",o:["Career","Health","Finance","Family","Personal","Education","Other"]},{t:"date",n:"Target Date"},{t:"select",n:"Status",o:["Active","On Hold","Completed","Cancelled"]},{t:"select",n:"Priority",o:["High","Medium","Low"]},{t:"text",n:"Notes"}]},
-  digi:     { icon:"🔐", sheet:"Digi Asset",label:"Digi Asset",cols:["Name","Category","Account","Value","Notes"],
-              fields:[{t:"text",n:"Name"},{t:"select",n:"Category",o:["Crypto","Investment","Domain","Subscription","Account","Software","Other"]},{t:"text",n:"Account"},{t:"text",n:"Value"},{t:"text",n:"Notes"}]},
-  calendar: { icon:"📅", sheet:"Calendar",  label:"Calendar",  cols:["Date","Title","Type","Description","Notes"],
-              fields:[{t:"date",n:"Date"},{t:"text",n:"Title"},{t:"select",n:"Type",o:["Event","Reminder","Holiday","Birthday","Meeting","Other"]},{t:"text",n:"Description"},{t:"text",n:"Notes"}]},
-  contact:  { icon:"👤", sheet:"Contact",   label:"Contact",   cols:["Name","Relationship","Phone","Email","Notes"],
-              fields:[{t:"text",n:"Name"},{t:"select",n:"Relationship",o:["Family","Friend","Colleague","Business","Other"]},{t:"text",n:"Phone"},{t:"text",n:"Email"},{t:"text",n:"Notes"}]},
-};
-
-// State
-let currentScreen = "home";
-let currentConfig = null;
-let genericRows = [];
-let leaveEntries = [];
-let editData = null;
-let editSheet = null;
-
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
-window.addEventListener("DOMContentLoaded", () => {
-  // Clock
-  updateClock();
-  setInterval(updateClock, 10000);
-  // Greeting
-  const h = new Date().getHours();
-  document.getElementById("heroGreeting").textContent = h<12?"Good morning ☀️":h<17?"Good afternoon 🌤":"Good evening 🌙";
-  // Dates
-  document.getElementById("lDate").value = tod();
-  document.getElementById("lAppDate").value = tod();
-  // Settings URL
-  document.getElementById("settingsUrl").value = GS_URL;
-  // Load
-  setTimeout(() => {
-    document.getElementById("splash").classList.add("hide");
-    loadLeaveStats();
-  }, 1600);
-});
-
-function updateClock() {
-  const n = new Date();
-  document.getElementById("clockTime").textContent =
-    n.getHours().toString().padStart(2,"0")+":"+n.getMinutes().toString().padStart(2,"0");
-}
-
-function tod() { return new Date().toISOString().slice(0,10); }
-
-// ══════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════
-function openScreen(name) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
-
-  if (name === "leave") {
-    document.getElementById("screen-leave").classList.add("active");
-    document.getElementById("tab-leave").classList.add("active");
-    loadLeave();
-  } else if (name === "home") {
-    document.getElementById("screen-home").classList.add("active");
-    document.getElementById("tab-home").classList.add("active");
-  } else if (PAGE_CONFIG[name]) {
-    loadGeneric(name);
-    document.getElementById("screen-generic").classList.add("active");
-  }
-  currentScreen = name;
-  // scroll to top
-  const el = document.getElementById("screen-"+name) || document.getElementById("screen-generic");
-  if (el) el.scrollTop = 0;
-}
-
-function goHome() { openScreen("home"); }
-function showTab(t) { openScreen(t); }
-function goSettings() {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
-  document.getElementById("screen-settings").classList.add("active");
-  document.getElementById("tab-settings").classList.add("active");
-  currentScreen = "settings";
-}
-
-function toggleForm(id) {
-  const el = document.getElementById(id);
-  const btn = el.previousElementSibling.querySelector(".form-card-toggle");
-  if (el.style.display === "none") { el.style.display = "block"; btn.textContent = "Hide ↑"; }
-  else { el.style.display = "none"; btn.textContent = "Show ↓"; }
-}
-
-// ══════════════════════════════════════════
-//  GS FETCH
-// ══════════════════════════════════════════
-async function gsFetch(params) {
-  const url = GS_URL + "?" + new URLSearchParams(params).toString();
-  const res = await fetch(url);
-  const txt = await res.text();
-  try { return JSON.parse(txt); }
-  catch(e) { throw new Error("Bad response: " + txt.slice(0,80)); }
-}
-
-// ══════════════════════════════════════════
-//  LEAVE
-// ══════════════════════════════════════════
-async function loadLeaveStats() {
-  try {
-    const data = await gsFetch({ action:"read", sheet:"Annual Leave" });
-    leaveEntries = (data.entries || []).map(normalizeLeaveEntry);
-    updateLeaveHero();
-  } catch(e) {}
-}
-
-async function loadLeave() {
-  document.getElementById("leaveList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>';
-  try {
-    const data = await gsFetch({ action:"read", sheet:"Annual Leave" });
-    leaveEntries = (data.entries || []).map(normalizeLeaveEntry);
-    renderLeave();
-    updateLeaveHero();
-  } catch(e) {
-    document.getElementById("leaveList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--red);font-size:13px">Could not load data</div>';
-    toast("Error: "+e.message, "err");
-  }
-}
-
-function updateLeaveHero() {
-  const rows  = leaveEntries.filter(e => !lIsBF(e));
-  const last  = rows[rows.length-1];
-  const rem   = last && !isNaN(lRemained(last)) ? lRemained(last) : BALANCE;
-  const spent = last && !isNaN(lSpent(last))    ? lSpent(last)    : 0;
-  document.getElementById("heroLeave").textContent = rem.toFixed(1)+" d";
-  document.getElementById("heroUsed").textContent  = spent.toFixed(1)+" d";
-}
-
-// Normalize raw Apps Script leave row into fixed short keys.
-// addLeaveRow() always writes columns in this fixed order (regardless of header names):
-//   col0=AppNo, col1=date, col2=balance, col3=spent, col4=applied,
-//   col5=remained, col6=reason, col7=remark, col8=appDate
-function normalizeLeaveEntry(raw) {
-  const META = new Set(["_rowIndex","id","isBF"]);
-  const vals = Object.entries(raw)
-    .filter(([k]) => !META.has(k))
-    .map(([, v]) => (v === undefined || v === null) ? "" : String(v));
-  const id = String(raw.id !== undefined && raw.id !== "" ? raw.id : (vals[0] || ""));
-  return {
-    id      : id,
-    isBF    : id === "0" || vals[1] === "",
-    date    : vals[1]  || "",
-    balance : vals[2]  || "",
-    spent   : vals[3]  || "",
-    applied : vals[4]  || "",
-    remained: vals[5]  || "",
-    reason  : vals[6]  || "",
-    remark  : vals[7]  || "",
-    appDate : vals[8]  || "",
-    _rowIndex: raw._rowIndex,
-  };
-}
-
-const lSpent    = e => parseFloat(e.spent);
-const lRemained = e => parseFloat(e.remained);
-const lApplied  = e => parseFloat(e.applied);
-const lDate     = e => e.date    || "";
-const lReason   = e => e.reason  || "";
-const lRemark   = e => e.remark  || "";
-const lAppDate  = e => e.appDate || "";
-const lId       = e => e.id      || String(e._rowIndex || "");
-const lIsBF     = e => e.isBF === true;
-
-function renderLeave() {
-  const rows = leaveEntries.filter(e => !lIsBF(e));
-  const last  = rows[rows.length-1];
-  const spent = last && !isNaN(lSpent(last))    ? lSpent(last)    : 0;
-  const rem   = last && !isNaN(lRemained(last)) ? lRemained(last) : BALANCE;
-  const pct   = Math.min(Math.round(spent/BALANCE*100), 100);
-
-  document.getElementById("lSpent").textContent = spent.toFixed(1);
-  document.getElementById("lRem").textContent   = rem.toFixed(1);
-  document.getElementById("lRem").className = "stat-pill-val "+(rem<=3?"r":rem<=7?"":"g");
-  document.getElementById("lProgBar").style.width = pct+"%";
-  document.getElementById("lCount").textContent = rows.length+" entries";
-
-  const list = document.getElementById("leaveList");
-  if (!rows.length) {
-    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No entries yet. Add one above.</div>';
-    return;
-  }
-  list.innerHTML = [...rows].reverse().map(e => {
-    const r2  = lRemained(e);
-    const ap  = lApplied(e);
-    const cls = isNaN(r2)||r2<=3?"r":r2<=7?"":"g";
-    const idx = leaveEntries.indexOf(e);
-    return `<div class="entry-card" onclick="openLeaveEdit(${idx})">
-      <div class="entry-icon" style="background:rgba(0,184,148,.2)">🌴</div>
-      <div class="entry-info">
-        <div class="entry-title">${lReason(e)||"Leave"}${lRemark(e)?" · "+lRemark(e):""}</div>
-        <div class="entry-sub">${fmtDate(lDate(e))}</div>
-      </div>
-      <div class="entry-right">
-        <div class="entry-val ${cls}">${isNaN(ap)?"–":ap.toFixed(1)+"d"}</div>
-        <div class="entry-date">${isNaN(r2)?"–":r2.toFixed(1)+" left"}</div>
-      </div>
-    </div>`;
-  }).join("");
-}
-
-async function addLeave() {
-  const date   = document.getElementById("lDate").value;
-  const days   = parseFloat(document.getElementById("lDays").value);
-  const reason = document.getElementById("lReason").value || "Other";
-  const remark = document.getElementById("lRemark").value.trim();
-  const appDate= document.getElementById("lAppDate").value;
-  const addCal = document.getElementById("lCal").checked;
-
-  if (!date || !days || days<=0) { toast("Fill in date and days","err"); return; }
-
-  const btn = document.getElementById("lAddBtn");
-  btn.disabled=true; btn.textContent="Saving…";
-  try {
-    const data = await gsFetch({action:"add",sheet:"Annual Leave",date,applied:days,reason,remark,appDate});
-    if (data.error) throw new Error(data.error);
-    document.getElementById("lDays").value="";
-    document.getElementById("lRemark").value="";
-    document.getElementById("lReason").value="";
-    await loadLeave();
-    if (addCal) silentCalendar({date, applied:days, reason, remark});
-    toast(addCal ? "Saved & added to Calendar ✓" : "Entry saved ✓","ok");
-  } catch(e) { toast("Error: "+e.message,"err"); }
-  finally { btn.disabled=false; btn.textContent="+ Add Entry"; }
-}
-
-function openLeaveEdit(idx) {
-  const e = leaveEntries[idx];
-  if (!e) return;
-  editData = e; editSheet = "Annual Leave";
-  const id = lId(e);
-  document.getElementById("sheetTitle").textContent = "Edit Leave Entry";
-  document.getElementById("sheetBody").innerHTML = `
-    <input type="hidden" id="sheetId" value="${id}"/>
-    <div class="f-row">
-      <div class="f-field"><label>Date</label><input type="date" id="sDate" value="${lDate(e)}"/></div>
-      <div class="f-field"><label>Days</label><input type="number" id="sDays" min="0.5" step="0.5" value="${isNaN(lApplied(e))?"":lApplied(e)}"/></div>
-    </div>
-    <div class="f-field"><label>Reason</label>
-      <select id="sReason">
-        ${["Busy at home","Going to province","Going to homeland","Children Graduation","Medical","Other"].map(o=>`<option ${lReason(e)===o?"selected":""}>${o}</option>`).join("")}
-      </select>
-    </div>
-    <div class="f-field"><label>Remark</label><input type="text" id="sRemark" value="${lRemark(e)}"/></div>
-    <div class="f-field"><label>Application date</label><input type="date" id="sAppDate" value="${lAppDate(e)}"/></div>
-  `;
-  document.getElementById("editSheet").classList.add("open");
-}
-
-async function saveEntry() {
-  if (editSheet === "Annual Leave") {
-    const id      = document.getElementById("sheetId").value;
-    const date    = document.getElementById("sDate").value;
-    const applied = parseFloat(document.getElementById("sDays").value);
-    const reason  = document.getElementById("sReason").value;
-    const remark  = document.getElementById("sRemark").value.trim();
-    const appDate = document.getElementById("sAppDate").value;
-    if (!date||!applied||applied<=0){ toast("Fill in date and days","err"); return; }
-    try {
-      await gsFetch({action:"delete",sheet:"Annual Leave",id});
-      await gsFetch({action:"add",sheet:"Annual Leave",date,applied,reason,remark,appDate});
-      toast("Updated ✓","ok"); closeSheetDirect(); await loadLeave();
-    } catch(e) { toast("Error: "+e.message,"err"); }
-  } else {
-    const id = document.getElementById("sheetId").value;
-    const params = {action:"update", sheet:editSheet, id};
-    const cfg = currentConfig;
-    if (cfg) {
-      cfg.fields.forEach(f => {
-        const el = document.getElementById("s_"+f.n.replace(/ /g,"_"));
-        if (el) params[f.n] = el.value.trim();
-      });
-    }
-    try {
-      const data = await gsFetch(params);
-      if (data.error) throw new Error(data.error);
-      toast("Updated ✓","ok"); closeSheetDirect(); await loadGenericData(currentScreen);
-    } catch(e) { toast("Error: "+e.message,"err"); }
-  }
-}
-
-async function deleteEntry() {
-  const id = document.getElementById("sheetId").value;
-  const sheet = editSheet;
-  if (!confirm("Delete this entry?")) return;
-  try {
-    await gsFetch({action:"delete", sheet, id});
-    toast("Deleted","ok"); closeSheetDirect();
-    if (sheet === "Annual Leave") await loadLeave();
-    else await loadGenericData(currentScreen);
-  } catch(e) { toast("Error: "+e.message,"err"); }
-}
-
-function closeSheet(evt) {
-  if (evt.target === document.getElementById("editSheet")) closeSheetDirect();
-}
-function closeSheetDirect() {
-  document.getElementById("editSheet").classList.remove("open");
-  editData = null;
-}
-
-// ══════════════════════════════════════════
-//  GENERIC SCREENS
-// ══════════════════════════════════════════
-function loadGeneric(name) {
-  const cfg = PAGE_CONFIG[name];
-  if (!cfg) return;
-  currentConfig = cfg;
-  document.getElementById("genericTitle").textContent = cfg.icon+" "+cfg.label;
-
-  // Build form fields
-  let html = "";
-  // Group pairs of fields in rows
-  for (let i=0; i<cfg.fields.length; i+=2) {
-    const f1 = cfg.fields[i], f2 = cfg.fields[i+1];
-    if (f2) {
-      html += `<div class="f-row">${makeField(f1,"f_")}&nbsp;${makeField(f2,"f_")}</div>`;
-    } else {
-      html += makeField(f1,"f_");
-    }
-  }
-  document.getElementById("genericFields").innerHTML = html;
-  // Set date defaults
-  cfg.fields.forEach(f => {
-    if (f.t==="date") { const el=document.getElementById("f_"+f.n.replace(/ /g,"_")); if(el)el.value=tod(); }
-  });
-  loadGenericData(name);
-}
-
-function makeField(f, prefix) {
-  const id = prefix + f.n.replace(/ /g,"_");
-  if (f.t==="select") {
-    const opts = f.o.map(o=>`<option>${o}</option>`).join("");
-    return `<div class="f-field"><label>${f.n}</label><select id="${id}"><option value="">Select…</option>${opts}</select></div>`;
-  }
-  return `<div class="f-field"><label>${f.n}</label><input type="${f.t}" id="${id}" placeholder="${f.n}"/></div>`;
-}
-
-async function loadGenericData(name) {
-  const cfg = PAGE_CONFIG[name];
-  document.getElementById("genericList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">Loading…</div>';
-  try {
-    const data = await gsFetch({action:"read", sheet:cfg.sheet});
-    genericRows = data.entries || data.rows || [];
-    renderGeneric(cfg);
-  } catch(e) {
-    document.getElementById("genericList").innerHTML = '<div style="text-align:center;padding:2rem;color:var(--red);font-size:13px">Could not load</div>';
-  }
-}
-
-function renderGeneric(cfg) {
-  document.getElementById("gCount").textContent = genericRows.length+" entries";
-  const list = document.getElementById("genericList");
-  if (!genericRows.length) {
-    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">No entries yet.</div>';
-    return;
-  }
-  const titleCol  = cfg.cols[0];
-  const subCol    = cfg.cols[1] || "";
-  const valCol    = cfg.cols[2] || "";
-
-  list.innerHTML = [...genericRows].reverse().map(row => {
-    const id = row._id || row.id || row._rowIndex;
-    const rj = JSON.stringify(row).replace(/"/g,"&quot;");
-    return `<div class="entry-card" onclick="openGenericEdit(${rj})">
-      <div class="entry-icon" style="font-size:22px;background:rgba(108,92,231,.2)">${cfg.icon}</div>
-      <div class="entry-info">
-        <div class="entry-title">${row[titleCol]||"–"}</div>
-        <div class="entry-sub">${row[subCol]||""}</div>
-      </div>
-      <div class="entry-right">
-        <div class="entry-val" style="color:var(--text2);font-size:12px">${row[valCol]||""}</div>
-      </div>
-    </div>`;
-  }).join("");
-}
-
-async function addGeneric() {
-  const cfg = currentConfig;
-  const params = {action:"add", sheet:cfg.sheet};
-  cfg.fields.forEach(f => {
-    const el = document.getElementById("f_"+f.n.replace(/ /g,"_"));
-    params[f.n] = el ? el.value.trim() : "";
-  });
-  const btn = document.getElementById("gAddBtn");
-  btn.disabled=true; btn.textContent="Saving…";
-  try {
-    const data = await gsFetch(params);
-    if (data.error) throw new Error(data.error);
-    toast("Saved ✓","ok");
-    cfg.fields.forEach(f => {
-      const el = document.getElementById("f_"+f.n.replace(/ /g,"_"));
-      if (el && f.t !== "date") el.value = "";
-    });
-    await loadGenericData(currentScreen);
-  } catch(e) { toast("Error: "+e.message,"err"); }
-  finally { btn.disabled=false; btn.textContent="+ Add Entry"; }
-}
-
-function openGenericEdit(row) {
-  editData = row; editSheet = currentConfig.sheet;
-  const cfg = currentConfig;
-  const id = row._id || row.id || row._rowIndex;
-  document.getElementById("sheetTitle").textContent = "Edit "+cfg.label;
-  let html = `<input type="hidden" id="sheetId" value="${id}"/>`;
-  cfg.fields.forEach(f => {
-    const fid = "s_"+f.n.replace(/ /g,"_");
-    const val = row[f.n] || "";
-    if (f.t==="select") {
-      const opts = f.o.map(o=>`<option ${val===o?"selected":""}>${o}</option>`).join("");
-      html += `<div class="f-field"><label>${f.n}</label><select id="${fid}"><option value="">Select…</option>${opts}</select></div>`;
-    } else {
-      html += `<div class="f-field"><label>${f.n}</label><input type="${f.t}" id="${fid}" value="${val}"/></div>`;
-    }
-  });
-  document.getElementById("sheetBody").innerHTML = html;
-  document.getElementById("editSheet").classList.add("open");
-}
-
-// ══════════════════════════════════════════
-//  CALENDAR — silent auto-add via Apps Script
-// ══════════════════════════════════════════
-// Strategy: call your Apps Script with action=addCalendar.
-// The GS adds the event server-side using CalendarApp — no redirect needed.
-// Falls back to opening a pre-filled Google Calendar URL if the GS returns an error.
-async function silentCalendar(e) {
-  const title   = "🌴 Leave"+(e.reason?" – "+e.reason:"")+(e.remark?" ("+e.remark+")":"");
-  const date    = e.date || "";
-  const applied = parseFloat(e.applied) || 1;
-
-  try {
-    const data = await gsFetch({
-      action:"addCalendar",
-      title, date, days: applied,
-      description: "Leave: "+(e.reason||"")+" | Remark: "+(e.remark||"")+" | Days: "+applied
-    });
-    if (data && data.ok) {
-      // Added silently — no redirect needed
-      return;
-    }
-    throw new Error(data?.error || "GS calendar failed");
-  } catch(err) {
-    // Fallback: open pre-filled Google Calendar tab
-    const d   = date.replace(/-/g,"");
-    const end = new Date(date); end.setDate(end.getDate() + Math.ceil(applied));
-    const eStr= end.toISOString().slice(0,10).replace(/-/g,"");
-    window.open(
-      `https://calendar.google.com/calendar/render?action=TEMPLATE`+
-      `&text=${encodeURIComponent(title)}&dates=${d}/${eStr}`+
-      `&details=${encodeURIComponent("Days: "+applied)}&trp=false`,
-      "_blank"
-    );
-  }
-}
-
-// ══════════════════════════════════════════
-//  SETTINGS
-// ══════════════════════════════════════════
-function saveSettings() {
-  toast("URL is pre-configured","ok");
-}
-
-async function testConn() {
-  document.getElementById("connDot").style.background="var(--amber)";
-  document.getElementById("connLabel").textContent="Testing…";
-  try {
-    const data = await gsFetch({action:"read",sheet:"Annual Leave"});
-    if (data.entries || data.rows) {
-      document.getElementById("connDot").style.background="var(--green)";
-      document.getElementById("connLabel").textContent="Connected ✓";
-      toast("Connection OK","ok");
-    } else throw new Error("No data");
-  } catch(e) {
-    document.getElementById("connDot").style.background="var(--red)";
-    document.getElementById("connLabel").textContent="Failed: "+e.message;
-    toast("Connection failed","err");
-  }
-}
-
-// ══════════════════════════════════════════
-//  UTILITIES
-// ══════════════════════════════════════════
-function fmtDate(d) {
-  if (!d) return "–";
-  const p = String(d).split("-");
-  if (p.length!==3) return d;
-  const m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  return `${p[2]}-${m[parseInt(p[1])-1]}-${p[0]}`;
-}
-
-function toast(msg, type) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = "toast show" + (type==="err"?" err":type==="ok"?" ok":"");
-  clearTimeout(t._t);
-  t._t = setTimeout(()=>t.className="toast",2800);
-}
-</script>
 </body>
 </html>
